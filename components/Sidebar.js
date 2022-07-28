@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeIcon } from '@heroicons/react/outline'
 const Sidebar = () => {
     return (
         <aside>
@@ -7,7 +8,7 @@ const Sidebar = () => {
                     <li>
                         <Link href="/">
                             <a>
-
+                                <HomeIcon className="w-5 h-5 text-blue-500" />
                             </a>
                         </Link>
                     </li>

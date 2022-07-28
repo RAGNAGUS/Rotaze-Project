@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
     return (
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Navbar />
+            <Sidebar />
             {children}
         </div>
     );
