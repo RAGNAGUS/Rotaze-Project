@@ -1,25 +1,10 @@
-import Image from "next/image";
 const Navbar = () => {
     return (
-        <nav className="flex justify-between">
-            {/* Logo */}
-            <div>
-                <Image width={0} height={0} src="/" alt="logo" />
-                logo
+        <nav className="fixed w-full h-16 bg-gray-800">
+            <div className="flex items-center justify-center w-full h-full">
+                <div>
+                </div>
             </div>
-
-            {/* Search bar */}
-            <form>
-                <input type="text" />
-            </form>
-            {/* Nav Links */}
-            <ul className="flex">
-                <li>link1</li>
-                <li>link1</li>
-                <li>link1</li>
-                <li>link1</li>
-                <li>link1</li>
-            </ul>
         </nav>
     );
 }
