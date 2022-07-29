@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-10/12 mx-auto py-36">
+      {/* <div className="w-10/12 mx-auto py-36">
 
         <div className='grid grid-cols-6 gap-3'>
 
@@ -173,7 +173,7 @@ export default function Home() {
           </div>
 
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

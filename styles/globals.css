@@ -11,4 +11,7 @@
 }
 
 @layer components {
+  .input-form {
+    @apply w-full h-10 pl-3 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-12 focus:border-gray-600;
+  }
 }
