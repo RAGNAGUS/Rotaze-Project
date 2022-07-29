@@ -1,9 +1,53 @@
 import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import { useSignup } from '../hooks/useSignup';
 
+// import icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
 
+
+
 const Signup = () => {
+
+    const { signupWithEmailAndPassword, isPending, error } = useSignup();
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordRetype, setPasswordRetype] = useState('')
+    const [passwordError, setpasswordError] = useState(null)
+    const [errorFormat, setErrorFormat] = useState(null)
+    const [displayName, setDisplayName] = useState('')
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setpasswordError(null)
+        setErrorFormat(null)
+        if (password == passwordRetype) {
+            signupWithEmailAndPassword(email, password, displayName)
+        } else {
+            setpasswordError('The password and confirmation password do not match.')
+        }
+    }
+
+    useEffect(() => {
+
+        if (error === 'Firebase: Error (auth/invalid-email).') {
+            setErrorFormat('Invalid email')
+        }
+        if (error === 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
+            setErrorFormat('Password should be at least 6 characters')
+        }
+        if (error === 'Firebase: Error (auth/email-already-in-use).') {
+            setErrorFormat('Email already in use')
+        }
+
+        return () => {
+
+        }
+    }, [error])
+
+
     return (
         <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
 
@@ -37,38 +81,60 @@ const Signup = () => {
                         or with Rotaze
                     </div>
                     <div className="px-5 py-1 bg-white">
-                        <form className="space-y-3">
+                        <form onSubmit={handleSubmit} className="space-y-3">
                             <label className="flex flex-col">
                                 <input
+                                    className="input-form"
+                                    required
                                     type="text"
                                     placeholder="Display Name"
-                                    required
-                                    className="input-form" />
+                                    onChange={(e) => setDisplayName(e.target.value)}
+                                    value={displayName}
+                                />
                             </label>
                             <label className="flex flex-col">
                                 <input
-                                    type="text"
+                                    className="input-form"
+                                    required
+                                    type="email"
                                     placeholder="Email"
-                                    required
-                                    className="input-form" />
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                />
                             </label>
                             <label className="flex flex-col">
                                 <input
-                                    type="text"
+                                    className="input-form"
+                                    required
+                                    type="password"
                                     placeholder="Password"
-                                    required
-                                    className="input-form" />
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                />
                             </label>
                             <label className="flex flex-col">
                                 <input
-                                    type="text"
-                                    placeholder="Retype Password"
+                                    className="input-form"
                                     required
-                                    className="input-form" />
+                                    type="password"
+                                    placeholder="Retype Password"
+                                    onChange={(e) => setPasswordRetype(e.target.value)}
+                                    value={passwordRetype}
+                                />
                             </label>
+                            {passwordError && (
+                                <label className='flex items-center h-12 p-2 pl-4 text-gray-800 bg-red-100 border-2 border-red-500 rounded-md '>
+                                    {passwordError}
+                                </label>
+                            )}
+                            {errorFormat && (
+                                <label className='flex items-center h-12 p-2 pl-4 text-gray-800 bg-red-100 border-2 border-red-500 rounded-md '>
+                                    {errorFormat}
+                                </label>
+                            )}
                             <div className="flex items-center justify-end w-full pt-2 space-x-3">
                                 <span className="text-sm text-right text-gray-800"><Link href="/login"><a>already have an account ?</a></Link></span>
-                                <button className="h-10 text-white bg-gray-600 border rounded-md shadow-sm w-28">
+                                <button type='submit' className="h-10 text-white bg-gray-600 border rounded-md shadow-sm w-28">
                                     <span>Sign up</span>
                                 </button>
                             </div>
