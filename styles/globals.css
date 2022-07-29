@@ -6,6 +6,9 @@
 
 @layer base {
   body {
-    @apply bg-[#f3f4f6] font-nunito;
+    @apply bg-[#fafafa] font-nunito;
   }
+}
+
+@layer components {
 }
