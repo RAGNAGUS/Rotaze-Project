@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { MdNotificationsNone } from 'react-icons/md'
 import { TbMessageCircle } from 'react-icons/tb'
 
-const Navbar = () => {
+export default function Navbar() {
 
     const { user } = useAuthContext()
 
@@ -27,7 +27,7 @@ const Navbar = () => {
                         <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded bg-gradient-to-r from-[#de6161]  to-[#2657eb] text-white" href="#">Premium</a></li>
                     </ul>
 
-                    <button className="px-2 py-1 ml-10 mr-1 font-semibold text-gray-600 border-2 border-gray-500 rounded sm:hidden">
+                    <button className="px-2 py-2 ml-10 mr-1 text-[12px] font-bold text-gray-600 border-2 border-gray-300 rounded sm:hidden">
                         <Link href="/"><a>ROTAZE</a></Link>
                     </button>
 
@@ -72,7 +72,5 @@ const Navbar = () => {
                 </div>
             </div>
         </nav>
-    );
+    )
 }
-
-export default Navbar;

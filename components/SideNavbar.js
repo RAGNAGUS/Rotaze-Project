@@ -10,7 +10,7 @@ import { TbMessages } from 'react-icons/tb'
 import { IoSettingsOutline } from 'react-icons/io5'
 import { RiCompassDiscoverLine } from 'react-icons/ri'
 
-const SideNavbar = () => {
+export default function SideNavbar() {
 
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     const panelControl = () => {
@@ -93,7 +93,5 @@ const SideNavbar = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
-
-export default SideNavbar;

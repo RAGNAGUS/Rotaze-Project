@@ -47,6 +47,4 @@ export const useSignup = () => {
     }
 
     return { signupWithEmailAndPassword, error, isPending }
-
-
 }

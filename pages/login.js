@@ -1,9 +1,10 @@
 import Link from 'next/link'
 
+// imports icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
 
-const Login = () => {
+export default function Login() {
     return (
         <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
             <div className='w-48 py-3 m-3 ml-5 text-gray-800 border rounded-md cursor-pointer '>
@@ -68,5 +69,3 @@ const Login = () => {
         </div>
     );
 }
-
-export default Login;

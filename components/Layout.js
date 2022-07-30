@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Navbar from './Navbar';
 import SideNavbar from './SideNavbar';
 
-const Layout = ({ children }) => {
+export default function Layout({ children }) {
     return (
         <div>
             <Head>
@@ -14,7 +14,5 @@ const Layout = ({ children }) => {
             <SideNavbar />
             {children}
         </div>
-    );
+    )
 }
-
-export default Layout;
