@@ -57,12 +57,10 @@ export default function Navbar() {
                                 <MdNotificationsNone className='w-7 h-7 invert-[40%] hover:invert-[30%]' />
                             </button>
                             {/* Profile dropdown */}
-                            <Menu as="div" className="relative ml-3">
+                            <Menu as="div" className="relative">
                                 <div>
-                                    <Menu.Button className="flex text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                        <span className="sr-only">Open user menu</span>
+                                    <Menu.Button className="object-cover w-10 h-10 overflow-hidden rounded-full lg:inline-block">
                                         <img
-                                            className="w-8 h-8 rounded-full"
                                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                             alt=""
                                         />
@@ -77,7 +75,7 @@ export default function Navbar() {
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Items className="absolute right-0 w-48 py-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <a
