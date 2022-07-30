@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Router, useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
 
@@ -9,10 +10,13 @@ import { auth, provider } from '../firebase/config';
 // import icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Signup() {
 
     const { signupWithEmailAndPassword, isPending, error } = useSignup();
+    const router = useRouter()
+    const { user } = useAuthContext()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -31,6 +35,13 @@ export default function Signup() {
             setpasswordError('The password and confirmation password do not match.')
         }
     }
+
+    // redirect to home page if user already logged in
+    useEffect(() => {
+        if (user) {
+            router.push('/')
+        }
+    }, [router, user])
 
     useEffect(() => {
 
@@ -59,7 +70,7 @@ export default function Signup() {
                 </Link>
             </div>
             <div className="flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-                <div className="w-full max-w-lg p-4 bg-white border rounded-md ">
+                <div className="w-full max-w-md p-4 bg-white border rounded-md ">
                     <div className="py-2 mx-8 mt-5 text-6xl text-center text-gray-500 border-2 border-gray-400 rounded-lg">
                         <h1>ROTAZE</h1>
                     </div>

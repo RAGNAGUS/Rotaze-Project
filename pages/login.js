@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
 
@@ -8,10 +9,14 @@ import { TbArrowBack } from 'react-icons/tb'
 import { useSignup } from '../hooks/useSignup';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebase/config';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Login() {
 
     const { loginWithEmailAndPassword, isPending, error } = useLogin();
+    const { user } = useAuthContext()
+    const router = useRouter()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorFormat, setErrorFormat] = useState(null)
@@ -20,6 +25,13 @@ export default function Login() {
         e.preventDefault()
         loginWithEmailAndPassword(email, password)
     }
+
+    // redirect to home page if user already logged in
+    useEffect(() => {
+        if (user) {
+            router.push('/')
+        }
+    }, [router, user])
 
     useEffect(() => {
 
@@ -45,7 +57,7 @@ export default function Login() {
                 </Link>
             </div>
             <div className="flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-                <div className="w-full max-w-lg p-4 bg-white border rounded-md ">
+                <div className="w-full max-w-md p-4 bg-white border rounded-md ">
                     <div className="py-2 mx-8 mt-5 text-6xl text-center text-gray-500 border-2 border-gray-400 rounded-lg">
                         <h1>ROTAZE</h1>
                     </div>

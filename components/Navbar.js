@@ -61,11 +61,12 @@ export default function Navbar() {
                             </button>
                             {/* Profile dropdown */}
                             <Menu as="div" className="relative">
-                                <div>
+                                <div className='flex items-center justify-center'>
                                     <Menu.Button className="object-cover w-10 h-10 overflow-hidden rounded-full lg:inline-block">
                                         <img
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            src="https://picsum.photos/300"
                                             alt=""
+
                                         />
                                     </Menu.Button>
                                 </div>
@@ -78,7 +79,7 @@ export default function Navbar() {
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <Menu.Items className="absolute right-0 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Items className="absolute right-0 w-48 mt-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <a
