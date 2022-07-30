@@ -6,6 +6,7 @@ import { Menu, Transition } from '@headlessui/react'
 // imports icons
 import { MdNotificationsNone } from 'react-icons/md'
 import { TbMessageCircle } from 'react-icons/tb'
+import { useSignout } from '../hooks/useSignout'
 
 // use for profile dropdown
 function classNames(...classes) {
@@ -15,6 +16,7 @@ function classNames(...classes) {
 export default function Navbar() {
 
     const { user } = useAuthContext()
+    const { signout } = useSignout()
 
     return (
         <nav className="fixed w-full bg-white border-b border-gray-200">
@@ -76,12 +78,12 @@ export default function Navbar() {
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <Menu.Items className="absolute right-0 w-48 py-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Items className="absolute right-0 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <a
                                                     href="#"
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    className={classNames(active ? 'bg-gray-600 text-gray-50 rounded-tl rounded-tr' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                 >
                                                     Your Profile
                                                 </a>
@@ -91,7 +93,7 @@ export default function Navbar() {
                                             {({ active }) => (
                                                 <a
                                                     href="#"
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    className={classNames(active ? 'bg-gray-600 text-gray-50' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                 >
                                                     Settings
                                                 </a>
@@ -101,7 +103,8 @@ export default function Navbar() {
                                             {({ active }) => (
                                                 <a
                                                     href="#"
-                                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    onClick={signout}
+                                                    className={classNames(active ? 'bg-gray-600 text-gray-50 rounded-bl rounded-br' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                 >
                                                     Sign out
                                                 </a>

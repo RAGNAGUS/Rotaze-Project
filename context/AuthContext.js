@@ -28,6 +28,7 @@ export const AuthContextProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, user => {
             dispatch({ type: 'AUTH_IS_READY', payload: user })
 
+            console.log("state change")
             // update status to online if logged in user opened website
             user && updateDoc(doc(db, 'users', user.uid), {
                 online: true
