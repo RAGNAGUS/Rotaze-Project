@@ -145,12 +145,12 @@ export const GoogleLoginButton = () => {
     }
     return (
         <button onClick={handleGoogleLogin} className='flex items-center justify-center w-full'>
-            <div className="flex rounded items-center p-[2px] w-8/12 bg-[#4285f4] border shadow-sm">
-                <div className='p-2 bg-white rounded-sm'>
+            <div className="flex rounded-md items-center p-[2px] w-full mx-5 bg-[#ffffff] border-gray-400 border">
+                <div className='p-2 px-3 mr-1 bg-white'>
                     <FcGoogle className='w-6 h-6' />
                 </div>
-                <div className='ml-auto mr-auto font-bold text-white '>
-                    <span>Sign in with Google</span>
+                <div className='mr-auto font-bold text-gray-500 '>
+                    <span>Continue with Google</span>
                 </div>
             </div>
         </button>
