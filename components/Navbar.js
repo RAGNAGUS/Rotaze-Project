@@ -50,8 +50,8 @@ export default function Navbar() {
                     {/* upload, notification and profile */}
                     {user && (
                         <div className="flex items-center gap-x-4 lg:flex-row">
-                            <button className="ml-3 md:ml-0 hidden sm:inline-block py-1.5 px-5 rounded-full border border-gray-200 hover:scale-110 duration-150 ease-in-out">
-                                Upload
+                            <button className="ml-3 md:ml-0 hidden sm:inline-block py-1.5 px-5 rounded-full border border-gray-200 ">
+                                <Link href="/upload"><a>Upload</a></Link>
                             </button>
                             <button className="ml-2 sm:ml-1 lg:inline-block">
                                 <TbMessageCircle className='w-7 h-7 invert-[40%] hover:invert-[30%]' />
