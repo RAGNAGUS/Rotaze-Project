@@ -1,12 +1,13 @@
 import { useAuthContext } from '../hooks/useAuthContext'
 import Link from 'next/link'
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
 
 // imports icons
 import { MdNotificationsNone } from 'react-icons/md'
 import { TbMessageCircle } from 'react-icons/tb'
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
 
+// use for profile dropdown
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -44,7 +45,7 @@ export default function Navbar() {
                         placeholder="Search"
                     />
 
-                    {/* upload notification and profile */}
+                    {/* upload, notification and profile */}
                     {user && (
                         <div className="flex items-center gap-x-4 lg:flex-row">
                             <button className="ml-3 md:ml-0 hidden sm:inline-block py-1.5 px-5 rounded-full border border-gray-200 hover:scale-110 duration-150 ease-in-out">
@@ -112,6 +113,7 @@ export default function Navbar() {
                         </div>
                     )}
 
+                    {/* if user not login then show login and sign up button instead */}
                     {!user && (
                         <div className="flex items-centerlg:flex-row">
                             <button className="hidden ml-3 sm:inline-block">

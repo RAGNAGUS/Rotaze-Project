@@ -2,11 +2,13 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
 
+// firebase
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../firebase/config';
+
 // import icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../firebase/config';
 
 export default function Signup() {
 

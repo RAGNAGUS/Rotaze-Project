@@ -47,6 +47,8 @@ export const useSignup = () => {
             const docSnap = await getDoc(docRef);
             if (!docSnap.exists()) {
                 setDocAfterSignup(user, displayName)
+            } else {
+                // update login time later
             }
             // dispatch login action
             dispatch({ type: 'LOGIN', payload: user })
