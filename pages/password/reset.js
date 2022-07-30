@@ -6,7 +6,7 @@ import { TbArrowBack } from 'react-icons/tb'
 export default function ResetPassword() {
     return (
         <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
-            <div className='w-48 py-3 m-3 ml-5 text-gray-800 border rounded-md cursor-pointer '>
+            <div className='w-48 py-3 m-3 ml-5 text-lg text-gray-800 cursor-pointer '>
                 <Link href="/login">
                     <div className='flex items-center justify-center space-x-3'>
                         <TbArrowBack />

@@ -3,7 +3,7 @@ import { useAuthContext } from "./useAuthContext"
 
 // firebase
 import { auth, db } from '../firebase/config'
-import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore"
+import { doc, setDoc, serverTimestamp, getDoc, updateDoc } from "firebase/firestore"
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 export const useSignup = () => {
@@ -34,7 +34,7 @@ export const useSignup = () => {
         }
     }
 
-    const signupWithGoogle = async (user, displayName) => {
+    const signinWithGoogle = async (user, displayName) => {
         setError(null)
         setIsPending(true)
 
@@ -48,7 +48,11 @@ export const useSignup = () => {
             if (!docSnap.exists()) {
                 setDocAfterSignup(user, displayName)
             } else {
-                // update login time later
+                // update online status
+                await updateDoc(doc(db, 'users', `${user.uid}`), {
+                    online: true,
+                    lastSignInTime: serverTimestamp()
+                })
             }
             // dispatch login action
             dispatch({ type: 'LOGIN', payload: user })
@@ -58,7 +62,6 @@ export const useSignup = () => {
             setError(error.message)
             setIsPending(false)
         }
-
     }
 
     const setDocAfterSignup = async (user, displayName) => {
@@ -68,7 +71,8 @@ export const useSignup = () => {
                 displayName,
                 email: user.email,
                 online: true,
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                lastSignInTime: serverTimestamp()
             })
         } catch (error) {
             setError(error.message)
@@ -76,5 +80,5 @@ export const useSignup = () => {
         }
     }
 
-    return { signupWithEmailAndPassword, signupWithGoogle, error, isPending }
+    return { signupWithEmailAndPassword, signinWithGoogle, error, isPending }
 }

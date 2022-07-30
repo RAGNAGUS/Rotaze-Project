@@ -1,13 +1,42 @@
 import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import { useLogin } from '../hooks/useLogin';
 
 // imports icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
+import { useSignup } from '../hooks/useSignup';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../firebase/config';
 
 export default function Login() {
+
+    const { loginWithEmailAndPassword, isPending, error } = useLogin();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [errorFormat, setErrorFormat] = useState(null)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        loginWithEmailAndPassword(email, password)
+    }
+
+    useEffect(() => {
+
+        if (error === 'Firebase: Error (auth/user-not-found).') {
+            setErrorFormat('User not found or incorrect password.')
+        }
+        if (error === 'Firebase: Error (auth/wrong-password).') {
+            setErrorFormat('User not found or incorrect password.')
+        }
+        return () => {
+            setErrorFormat(null)
+        }
+    }, [error])
+
     return (
         <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
-            <div className='w-48 py-3 m-3 ml-5 text-gray-800 border rounded-md cursor-pointer '>
+            <div className='w-48 py-3 m-3 ml-5 text-lg text-gray-800 cursor-pointer '>
                 <Link href="/">
                     <div className='flex items-center justify-center space-x-3'>
                         <TbArrowBack />
@@ -21,42 +50,56 @@ export default function Login() {
                         <h1>ROTAZE</h1>
                     </div>
                     <div className='flex justify-center w-full mt-5 mb-1 text-sm text-gray-600'>
-                        Sign up with
+                        login with
                     </div>
-                    <div className='flex items-center justify-center w-full'>
-                        <div className="flex rounded items-center p-[2px] w-8/12 bg-[#4285f4] border shadow-sm">
-                            <div className='p-2 bg-white rounded-sm'>
-                                <FcGoogle className='w-6 h-6' />
-                            </div>
-                            <div className='ml-auto mr-auto font-bold text-white '>
-                                <span>Sign in with Google</span>
-                            </div>
-                        </div>
-                    </div>
+                    <GoogleLoginButton />
                     <div className='flex justify-center w-full mt-4 mb-1 text-sm text-gray-600'>
                         or with Rotaze
                     </div>
                     <div className="px-5 py-1 bg-white">
-                        <form className="space-y-3">
+                        <form onSubmit={handleSubmit} className="space-y-3">
                             <label className="flex flex-col">
                                 <input
-                                    type="text"
+                                    className="input-form"
+                                    required
+                                    type="email"
                                     placeholder="Email"
-                                    required
-                                    className="input-form" />
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                />
                             </label>
                             <label className="flex flex-col">
                                 <input
-                                    type="text"
-                                    placeholder="Password"
+                                    className="input-form"
                                     required
-                                    className="input-form" />
+                                    type="password"
+                                    placeholder="Password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                />
                             </label>
+                            {errorFormat && (
+                                <label className='error-form '>
+                                    {errorFormat}
+                                </label>
+                            )}
                             <div className="flex items-center justify-end w-full pt-2 space-x-3">
                                 <span className="text-sm text-right text-gray-600"><Link href="/password/reset"><a>forget password ?</a></Link></span>
-                                <button className="h-10 text-white bg-gray-600 border rounded-md shadow-sm w-28">
-                                    <span>Login</span>
-                                </button>
+                                {!isPending && (
+                                    <button type='submit' className="h-10 text-white bg-gray-600 border rounded-md shadow-sm w-28">
+                                        <span>Login</span>
+                                    </button>
+                                )}
+                                {isPending && (
+                                    <button type='submit' disabled className="h-10 text-white bg-gray-600 border rounded-md shadow-sm w-28">
+                                        <div className='flex items-center justify-center w-full'>
+                                            <svg className="w-5 h-5 mr-3 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" ></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>
@@ -67,5 +110,31 @@ export default function Login() {
                 </div>
             </div>
         </div>
+
     );
+}
+
+export const GoogleLoginButton = () => {
+    const { signinWithGoogle } = useSignup();
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                signinWithGoogle(user, user.displayName)
+            }).catch((error) => {
+                console.log(error.message)
+            })
+    }
+    return (
+        <button onClick={handleGoogleLogin} className='flex items-center justify-center w-full'>
+            <div className="flex rounded items-center p-[2px] w-8/12 bg-[#4285f4] border shadow-sm">
+                <div className='p-2 bg-white rounded-sm'>
+                    <FcGoogle className='w-6 h-6' />
+                </div>
+                <div className='ml-auto mr-auto font-bold text-white '>
+                    <span>Sign in with Google</span>
+                </div>
+            </div>
+        </button>
+    )
 }
