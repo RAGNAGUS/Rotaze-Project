@@ -4,6 +4,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 
 // import icons
 import { TbArrowBack } from 'react-icons/tb'
+import { useEffect } from 'react'
 
 export default function ResetPassword() {
 
