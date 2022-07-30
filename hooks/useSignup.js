@@ -2,10 +2,9 @@ import { useState } from "react"
 import { useAuthContext } from "./useAuthContext"
 
 // firebase
-import { auth, db, storage } from '../firebase/config'
-import { doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore"
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { auth, db } from '../firebase/config'
+import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore"
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 export const useSignup = () => {
 
@@ -14,37 +13,66 @@ export const useSignup = () => {
     const { dispatch } = useAuthContext()
 
     const signupWithEmailAndPassword = async (email, password, displayName) => {
-
         setError(null)
         setIsPending(true)
 
         try {
             // signup
             const res = await createUserWithEmailAndPassword(auth, email, password)
-
             if (!res) {
                 throw new Error('Could not complete signup')
             }
-
             // create a user document after sign up
-            await setDoc(doc(db, 'users', `${res.user.uid}`), {
-                online: true,
-                displayName,
-                email: res.user.email,
-                createdAt: serverTimestamp()
-            })
-
+            setDocAfterSignup(res.user, displayName)
             // dispatch login action
             dispatch({ type: 'LOGIN', payload: res.user })
-
             setError(null)
             setIsPending(false)
-
         } catch (error) {
             setError(error.message)
             setIsPending(false)
         }
     }
 
-    return { signupWithEmailAndPassword, error, isPending }
+    const signupWithGoogle = async (user, displayName) => {
+        setError(null)
+        setIsPending(true)
+
+        try {
+            if (!user) {
+                throw new Error('Could not complete signup')
+            }
+            // create a user document after sign up if not exists
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+                setDocAfterSignup(user, displayName)
+            }
+            // dispatch login action
+            dispatch({ type: 'LOGIN', payload: user })
+            setError(null)
+            setIsPending(false)
+        } catch (error) {
+            setError(error.message)
+            setIsPending(false)
+        }
+
+    }
+
+    const setDocAfterSignup = async (user, displayName) => {
+        try {
+            await setDoc(doc(db, 'users', `${user.uid}`), {
+                uid: user.uid,
+                displayName,
+                email: user.email,
+                online: true,
+                createdAt: serverTimestamp()
+            })
+        } catch (error) {
+            setError(error.message)
+            setIsPending(false)
+        }
+    }
+
+    return { signupWithEmailAndPassword, signupWithGoogle, error, isPending }
 }

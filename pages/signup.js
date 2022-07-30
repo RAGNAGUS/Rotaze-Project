@@ -5,6 +5,8 @@ import { useSignup } from '../hooks/useSignup';
 // import icons
 import { FcGoogle } from 'react-icons/fc'
 import { TbArrowBack } from 'react-icons/tb'
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../firebase/config';
 
 export default function Signup() {
 
@@ -44,7 +46,6 @@ export default function Signup() {
         }
     }, [error])
 
-
     return (
         <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
             <div className='w-48 py-3 m-3 ml-5 text-gray-800 border rounded-md cursor-pointer '>
@@ -63,16 +64,7 @@ export default function Signup() {
                     <div className='flex justify-center w-full mt-5 mb-1 text-sm text-gray-600'>
                         Sign up with
                     </div>
-                    <div className='flex items-center justify-center w-full'>
-                        <div className="flex rounded items-center p-[2px] w-8/12 bg-[#4285f4] border shadow-sm">
-                            <div className='p-2 bg-white rounded-sm'>
-                                <FcGoogle className='w-6 h-6' />
-                            </div>
-                            <div className='ml-auto mr-auto font-bold text-white '>
-                                <span>Sign up with Google</span>
-                            </div>
-                        </div>
-                    </div>
+                    <GoogleLoginButton />
                     <div className='flex justify-center w-full mt-4 mb-1 text-sm text-gray-600'>
                         or with Rotaze
                     </div>
@@ -156,4 +148,29 @@ export default function Signup() {
             </div>
         </div>
     );
+}
+
+export const GoogleLoginButton = () => {
+    const { signupWithGoogle } = useSignup();
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                signupWithGoogle(user, user.displayName)
+            }).catch((error) => {
+                console.log(error.message)
+            })
+    }
+    return (
+        <button onClick={handleGoogleLogin} className='flex items-center justify-center w-full'>
+            <div className="flex rounded items-center p-[2px] w-8/12 bg-[#4285f4] border shadow-sm">
+                <div className='p-2 bg-white rounded-sm'>
+                    <FcGoogle className='w-6 h-6' />
+                </div>
+                <div className='ml-auto mr-auto font-bold text-white '>
+                    <span>Sign up with Google</span>
+                </div>
+            </div>
+        </button>
+    )
 }
