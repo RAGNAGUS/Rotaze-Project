@@ -13,6 +13,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Login() {
 
+    const [isVisible, setIsVisible] = useState(true)
+
     const { loginWithEmailAndPassword, isPending, error } = useLogin();
     const { user } = useAuthContext()
     const router = useRouter()
@@ -32,6 +34,10 @@ export default function Login() {
             router.push('/')
         }
     }, [router, user])
+
+    useEffect(() => {
+        setIsVisible(!isVisible)
+    }, [])
 
     useEffect(() => {
 
