@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Link from 'next/link'
 
 // imports icons
 import Image from "next/image";
@@ -35,13 +36,13 @@ export default function SideNavbar() {
 
     return (
         <div id="clickbox">
-            <button onClick={panelControl} className="fixed flex items-center justify-center p-2 rounded-md top-4 left-2 hover:bg-gray-100">
+            <button onClick={panelControl} className="fixed z-20 flex items-center justify-center p-2 rounded-md top-4 left-2 hover:bg-gray-100">
                 <div className="inline-block w-6 h-6 md:hidden invert-[30%]">
                     <Image src={MenuIcon} alt="" />
                 </div>
             </button>
             <div>
-                <div className={`fixed z-20 bg-gray-800 shadow-xl w-1/2 md:w-4/12 lg:w-1/6 h-screen top-[74px] p-6 duration-500 ease-in-out ${isPanelOpen ? 'left-0' : '-left-96'}`}>
+                <div className={`fixed bg-gray-800 shadow-xl w-1/2 md:w-4/12 lg:w-1/6 h-screen top-[74px] p-6 duration-500 ease-in-out ${isPanelOpen ? 'left-0' : '-left-96'}`}>
                     <div className="flex flex-col justify-start item-center">
                         <div className="flex items-center justify-start px-5 py-3 m-auto mb-2 duration-150 ease-in-out rounded-md cursor-pointer bg-gradient-to-r from-[#de6161]  to-[#2657eb] group hover:shadow-lg hover:px-10 ">
                             <h3 className="text-base font-semibold text-white ">
@@ -52,7 +53,7 @@ export default function SideNavbar() {
                             <div className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 bg-gray-700 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">
                                 <BiHome className="text-2xl text-gray-300 group-hover:text-white" />
                                 <h3 className="text-base text-gray-300 font-semibolgray-300 group-hover:text-white ">
-                                    Home
+                                    <Link href='/upload'>Home</Link>
                                 </h3>
                             </div>
                             <div className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">

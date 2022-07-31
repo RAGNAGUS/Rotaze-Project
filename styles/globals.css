@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-[#fafafa] font-nunito;
+    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito;
   }
 }
 
@@ -18,6 +18,6 @@
     @apply flex items-center h-12 p-2 pl-4 py-7 sm:py-0 text-gray-800 bg-red-100 border-2 border-red-500 rounded-md;
   }
   .fps-edit-btn {
-    @apply border px-5 py-1 rounded-md text-center cursor-pointer;
+    @apply border px-5 py-1 w-14 sm:w-16 rounded-md justify-center text-center cursor-pointer;
   }
 }
