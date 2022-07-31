@@ -19,7 +19,7 @@ export default function Navbar() {
     const { signout } = useSignout()
 
     return (
-        <nav className="fixed w-full bg-white border-b border-gray-200">
+        <nav className="fixed z-20 w-full bg-white border-b border-gray-200">
             <div className="px-4 mx-auto max-w-7xl">
                 <div className="flex items-center justify-between h-[73px] gap-x-2 md:gap-x-6">
 
