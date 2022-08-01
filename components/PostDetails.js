@@ -38,10 +38,11 @@ const options = [
     { value: 'vanil9la', label: 'Vanilla' }
 ]
 
-export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, isConditionIsGIF }) {
+export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, isConditionIsGIF, isConditionIsSingleImage }) {
 
     // width for image resize
-    let width = 800
+    let widthMultiImage = 3000
+    let widthSingleImage = 800
 
     // catch error
     const [error, setError] = useState(null)
@@ -66,13 +67,14 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
 
     useEffect(() => {
         console.log('object');
+        setProgress(0)
         // reduce file size
         // skip reducing the file size if it's GIF
         setImageResizeList([])
-        if (uploadImageList.length > 0 && !isConditionIsGIF) {
+        if (uploadImageList.length > 0 && !isConditionIsGIF && !isConditionIsSingleImage) {
             for (let i = 0; i < uploadImageList.length; i++) {
                 Morpheus.resize(uploadImageList[i], {
-                    width
+                    widthMultiImage
                 })
                     .then(canvas => Morpheus.toFile(canvas, `image_${i}`))
                     .then(image => {
@@ -82,6 +84,20 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
                     console.log("Delay");
                 }, 100);
             }
+        } else if (isConditionIsSingleImage) {
+            for (let i = 0; i < uploadImageList.length; i++) {
+                Morpheus.resize(uploadImageList[i], {
+                    widthSingleImage
+                })
+                    .then(canvas => Morpheus.toFile(canvas, 'image'))
+                    .then(image => {
+                        setImageResizeList(prev => [...prev, image])
+                    });
+                setTimeout(() => {
+                    console.log("Delay");
+                }, 100);
+            }
+
         } else {
             setImageResizeList(prev => [...prev, uploadImageList[0]])
         }
@@ -91,18 +107,23 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uploadImageList])
 
-    console.log(imageResizeList);
 
+    // trigger when start post
     const handleConfirmPost = async () => {
         setDownloadUrlList([])
         setProgress(0)
 
         if (imageResizeList.length > 0) {
             for (let i = 0; i < imageResizeList.length; i++) {
-                const storageRef = ref(storage, `files/uid/${imageResizeList[i].name}`);
+                let storageRef = null
+                if (isConditionIsGIF || isConditionIsSingleImage) {
+                    storageRef = ref(storage, `files/uid/image`);
+                } else {
+                    storageRef = ref(storage, `files/uid/${imageResizeList[i].name}`);
+                }
+
                 try {
                     await uploadBytes(storageRef, imageResizeList[i]).then(() => {
-                        console.log(i + ' success')
                         setProgress(Math.round((i / imageResizeList.length) * 100))
                     });
                     const url = await getDownloadURL(ref(storage, storageRef))
@@ -115,8 +136,10 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
         }
     }
 
-    return (
+    let abc = downloadUrlList.sort(function (a, b) { return a - b });
+    console.log(abc)
 
+    return (
         <Transition.Root show={isConfirm} as={Fragment}>
             <Dialog as="div" className="relative z-30 " onClose={() => setisConfirm(true)}>
                 <Transition.Child
@@ -171,6 +194,9 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
                                                             options={options}
                                                             onChange={handleChange}
                                                         />
+                                                    </div>
+                                                    <div>
+                                                        {progress}
                                                     </div>
                                                 </form>
                                             </div>
