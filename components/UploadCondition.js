@@ -38,7 +38,7 @@ export default function UploadCondition({
     return (
 
         <Transition.Root show={!isSelectCondition} as={Fragment}>
-            <Dialog as="div" className="relative z-20 " onClose={() => setIsSelectCondition(false)}>
+            <Dialog as="div" className="relative z-30 " onClose={() => setIsSelectCondition(false)}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -95,7 +95,9 @@ export default function UploadCondition({
                                         </div>
                                     </div>
                                 </div>
-
+                                <div>
+                                    <button></button>
+                                </div>
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
