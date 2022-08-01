@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable"
+
+// import icon
 import { RiDragMoveFill } from 'react-icons/ri'
 
 export default function PreviewDialog({ dragable, setDragable, imgList }) {
@@ -8,7 +10,6 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
     const [fps, setFps] = useState(10)
     const [playSpeed, setPlaySpeed] = useState(100)
     const nodeRef = useRef(null)
-
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -47,9 +48,8 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
         setPlaySpeed(1000 / fps)
     }
 
-
     return (
-        <div className={`fixed z-10 -mt-[10px] pt-20 pl-5 w-screen h-screen ${dragable ? 'backdrop-opacity-10 backdrop-invert bg-black/30' : 'pointer-events-none'}`}>
+        <div className={`fixed z-20 -mt-[10px] pt-20 pl-5 w-screen h-screen ${dragable ? 'backdrop-opacity-10 backdrop-invert bg-black/30' : 'pointer-events-none'}`}>
             {imgList.length > 0 && (
                 < Draggable Draggable bounds="parent" nodeRef={nodeRef}>
                     <div ref={nodeRef} className="fixed flex flex-col duration-300 ease-out bg-gray-800 shadow-2xl w-52 md:w-80 lg:w-96 sm:w-72">
@@ -65,7 +65,6 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
                                 <img src={imgList[showImg]} alt="" />
                             </div>
                         </div>
-
                         {/* configs */}
                         {dragable && (
                             <div className="flex flex-col mb-2 space-y-3">
@@ -89,11 +88,9 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
                                 </button>
                             </div>
                         )}
-
                     </div>
                 </Draggable>
             )}
-
         </div >
     )
 }

@@ -19,7 +19,7 @@ export default function ResetPassword() {
     }, [router, user])
 
     return (
-        <div className='fixed z-20 w-screen h-screen bg-[#ffffff]'>
+        <div className='fixed z-30 w-screen h-screen bg-[#ffffff]'>
             <div className='w-48 py-3 m-3 ml-5 text-lg text-gray-800 cursor-pointer '>
                 <Link href="/login">
                     <div className='flex items-center justify-center space-x-3'>
