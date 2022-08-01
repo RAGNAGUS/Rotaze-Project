@@ -2,6 +2,8 @@ import { React, Fragment, useState } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
+import { ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../firebase/config';
 
 const animatedComponents = makeAnimated();
 
@@ -33,7 +35,7 @@ const options = [
     { value: 'vanil9la', label: 'Vanilla' }
 ]
 
-export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
+export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }) {
 
     const [postTitle, setPostTitle] = useState('')
     const [postDescription, setPostDescription] = useState('')
@@ -49,11 +51,12 @@ export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
 
     const handleConfirmPost = () => {
         console.log("start upload")
-        // const storageRef = ref(storage, 'images/mountains.png')
-        // console.log(uploadImgageList)
-        // uploadBytes(storageRef, imgList[0]).then((snapshot) => {
-        //     console.log("success");
-        // })
+
+        const mountainsRef = ref(storage, 'mountains.jpg');
+        uploadBytes(mountainsRef, uploadImageList[0]).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+        });
+
     }
 
 

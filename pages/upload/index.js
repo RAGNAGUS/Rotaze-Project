@@ -26,6 +26,7 @@ export default function Upload() {
     const [errorMsg, setErrorMsg] = useState({})
     const [isConfirm, setisConfirm] = useState(false)
     const [imgList, setImgList] = useState([])
+    const [uploadImageList, setUploadImageList] = useState([])
     const [dragable, setDragable] = useState(false)
     const [isPreview, setIsPreview] = useState(false)
 
@@ -50,6 +51,8 @@ export default function Upload() {
                         case 'image/jpeg':
                             const imgLinkList = URL.createObjectURL(selectedImg[i])
                             setImgList((prev) => [...prev, imgLinkList])
+                            const uploadLink = selectedImg[i]
+                            setUploadImageList(prev => [...prev, uploadLink])
                             break;
                         default:
                             setIsError(true)
@@ -68,6 +71,8 @@ export default function Upload() {
                     case 'image/jpeg':
                         const imgLinkList = URL.createObjectURL(selectedImg[0])
                         setImgList((prev) => [...prev, imgLinkList])
+                        const uploadLink = selectedImg[0]
+                        setUploadImageList(prev => [...prev, uploadLink])
                         break;
                     default:
                         setIsError(true)
@@ -83,6 +88,8 @@ export default function Upload() {
                     case 'image/gif':
                         const imgLinkList = URL.createObjectURL(selectedImg[0])
                         setImgList((prev) => [...prev, imgLinkList])
+                        const uploadLink = selectedImg[0]
+                        setUploadImageList(prev => [...prev, uploadLink])
                         break;
                     default:
                         setIsError(true)
@@ -99,19 +106,27 @@ export default function Upload() {
 
     const resetImageList = () => {
         setImgList([])
+        setUploadImageList([])
     }
 
-    function deleteHandler(image) {
+    function deleteHandler(index) {
         let newList = []
+        let uploadNewList = []
         for (let i = 0; i < imgList.length; i++) {
 
-            if (imgList[i] !== image) {
+            if (imgList[i] !== imgList[index]) {
                 newList = [...newList, imgList[i]]
             }
         }
-        setImgList(newList)
-    }
+        for (let i = 0; i < uploadImageList.length; i++) {
 
+            if (uploadImageList[i] !== uploadImageList[index]) {
+                uploadNewList = [...uploadNewList, uploadImageList[i]]
+            }
+        }
+        setImgList(newList)
+        setUploadImageList(uploadNewList)
+    }
     return (
         <div className="pt-[83px]">
 
@@ -127,7 +142,7 @@ export default function Upload() {
 
             {/* Post Details */}
             <div className='fixed'>
-                <PostDetails isConfirm={isConfirm} setisConfirm={setisConfirm} imgList={imgList} />
+                <PostDetails isConfirm={isConfirm} setisConfirm={setisConfirm} uploadImageList={uploadImageList} />
             </div>
 
             {/* Invalid File Type Alert */}
@@ -180,7 +195,7 @@ export default function Upload() {
                         {imgList.map((img, index) => {
                             return (
                                 <Fragment key={index}>
-                                    <div onClick={() => deleteHandler(img)} className="p-3 m-2 border rounded shadow-sm">
+                                    <div onClick={() => deleteHandler(index)} className="p-3 m-2 border rounded shadow-sm">
                                         <div className="flex items-center justify-center border-[3px] border-dashed p-2 w-full h-full">
                                             <div className='duration-100 ease-out hover:scale-[1.3] max-w-[180px]'>
                                                 <img src={img} alt="" />
@@ -231,7 +246,7 @@ export default function Upload() {
                         {imgList.map((img, index) => {
                             return (
                                 <Fragment key={index}>
-                                    <div onClick={() => deleteHandler(img)} className="p-3 m-2 border rounded shadow-sm">
+                                    <div onClick={() => deleteHandler(index)} className="p-3 m-2 border rounded shadow-sm">
                                         <div className="flex items-center justify-center border-[3px] border-dashed p-2 w-full h-full">
                                             <div className='duration-100 ease-out hover:scale-[1.3] max-w-[180px]'>
                                                 <img src={img} alt="" />
@@ -279,7 +294,7 @@ export default function Upload() {
                         {imgList.map((img, index) => {
                             return (
                                 <Fragment key={index}>
-                                    <div onClick={() => deleteHandler(img)} className="p-3 m-2 border rounded shadow-sm">
+                                    <div onClick={() => deleteHandler(index)} className="p-3 m-2 border rounded shadow-sm">
                                         <div className="flex items-center justify-center border-[3px] border-dashed p-2 w-full h-full">
                                             <div className='duration-100 ease-out hover:scale-[1.3] max-w-[180px]'>
                                                 <img src={img} alt="" />
