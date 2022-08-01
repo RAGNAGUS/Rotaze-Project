@@ -1,7 +1,44 @@
-import { Fragment, useRef, useState } from 'react'
+import { React, Fragment } from 'react'
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
 
+const animatedComponents = makeAnimated();
+
+const colourStyles = {
+    control: (styles) => ({ ...styles, backgroundColor: "" }),
+    option: (styles) => ({ ...styles, color: "#1f2937" }),
+    multiValue: (styles) => ({ ...styles, color: "" }),
+    multiValueLabel: (styles) => ({ ...styles, backgroundColor: "#4a6283", color: "white" }),
+    multiValueRemove: (styles) => ({ ...styles, backgroundColor: "", }),
+}
+const options = [
+    { value: 'strawberry2', label: 'Strawberry' },
+    { value: 'chocolate3', label: 'Chocolate' },
+    { value: 'strawberry4', label: 'Strawberry' },
+    { value: 'chocolate5', label: 'Chocolate' },
+    { value: 'strawb5erry', label: 'Strawberry' },
+    { value: 'choco5late', label: 'Chocolate' },
+    { value: 'straw5berry', label: 'Strawberry' },
+    { value: 'ch5ocolate', label: 'Chocolate' },
+    { value: 'stra6wberry', label: 'Strawberry' },
+    { value: 'choc6olate', label: 'Chocolate' },
+    { value: 'straw7berry', label: 'Strawberry' },
+    { value: 'choco4late', label: 'Chocolate' },
+    { value: 'straw3berry', label: 'Strawberry' },
+    { value: 'choc5olate', label: 'Chocolate' },
+    { value: 'strawb7erry', label: 'Strawberry' },
+    { value: 'choc8olate', label: 'Chocolate' },
+    { value: 'stra9wberry', label: 'Strawberry' },
+    { value: 'vanil9la', label: 'Vanilla' }
+]
+
 export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
+
+    const handleChange = (selectedOption) => {
+        console.log(selectedOption)
+    }
+
     return (
 
         <Transition.Root show={isConfirm} as={Fragment}>
@@ -29,26 +66,37 @@ export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-96">
-                                <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-                                    <div className="sm:flex sm:items-start">
-                                        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <Dialog.Panel className="relative w-full text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full">
+                                <div className="px-4 pt-5 pb-4 bg-white rounded-lg sm:p-6 sm:pb-4">
+                                    <div className="flex flex-col sm:items-start">
+                                        <div className="mt-3 text-center sm:mt-0 sm:text-left">
                                             <Dialog.Title as="h3" className="pb-1 text-lg font-medium leading-6 text-gray-600 border-b">
                                                 Give your post some details
                                             </Dialog.Title>
-                                            <div className='flex'>
-                                                <div className="mt-2">
-                                                    <form className='flex flex-col space-y-3 text-left text-gray-900'>
-                                                        <label className='flex flex-col'>
-                                                            <span className='pb-0.5'>Post title:</span>
-                                                            <input type="text" className='pl-2 pr-1 duration-300 ease-in-out border-2 rounded-md outline-none h-9 focus:border-gray-400 focus:h-12' />
-                                                        </label>
-                                                        <label className='flex flex-col '>
-                                                            <span className='pb-0.5'>Description:</span>
-                                                            <textarea type="text" className='h-20 p-1 px-2 duration-300 ease-in-out border-2 rounded-md outline-none focus:h-40' />
-                                                        </label>
-                                                    </form>
-                                                </div>
+                                        </div>
+                                        <div className='flex w-full'>
+                                            <div className="w-full mt-2 ">
+                                                <form className='flex flex-col w-full space-y-3 text-left text-gray-900'>
+                                                    <label className='flex flex-col'>
+                                                        <span className='pb-0.5'>Post title:</span>
+                                                        <input type="text" className='pl-2 pr-1 duration-300 ease-in-out border-2 rounded-md outline-none h-9 focus:border-gray-400 focus:h-12' />
+                                                    </label>
+                                                    <label className='flex flex-col '>
+                                                        <span className='pb-0.5'>Description:</span>
+                                                        <textarea type="text" className='h-20 p-1 px-2 duration-300 ease-in-out border-2 rounded-md outline-none focus:h-40' />
+                                                    </label>
+                                                    <div className='w-fit'>
+                                                        <span className='pb-0.5'>Select tags:</span>
+                                                        <Select
+                                                            closeMenuOnSelect={true}
+                                                            components={animatedComponents}
+                                                            styles={colourStyles}
+                                                            isMulti
+                                                            options={options}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

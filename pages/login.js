@@ -47,6 +47,9 @@ export default function Login() {
         if (error === 'Firebase: Error (auth/wrong-password).') {
             setErrorFormat('User not found or incorrect password.')
         }
+        if (error === 'Firebase: Error (auth/user-disabled).') {
+            setErrorFormat('Your account has been temporarily locked, contact our support.')
+        }
         return () => {
             setErrorFormat(null)
         }

@@ -2,7 +2,7 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
-export default function InvalidFileType({ isError, setIsError }) {
+export default function InvalidFileType({ isError, setIsError, errorMsg }) {
 
     return (
         <Transition.Root show={isError} as={Fragment}>
@@ -38,11 +38,11 @@ export default function InvalidFileType({ isError, setIsError }) {
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                                                Only image file can be selected
+                                                {errorMsg.title}
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                    The image must be a file of type: png, jpg, jpeg
+                                                    {errorMsg.detail}
                                                 </p>
                                             </div>
                                         </div>
