@@ -1,4 +1,4 @@
-import { React, Fragment } from 'react'
+import { React, Fragment, useState } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
@@ -35,9 +35,27 @@ const options = [
 
 export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
 
+    const [postTitle, setPostTitle] = useState('')
+    const [postDescription, setPostDescription] = useState('')
+    const [postTags, setPostTags] = useState([])
+
     const handleChange = (selectedOption) => {
-        console.log(selectedOption)
+        let result = []
+        selectedOption.map(option => {
+            result = [...result, option.value]
+        })
+        setPostTags(result)
     }
+
+    const handleConfirmPost = () => {
+        console.log("start upload")
+        // const storageRef = ref(storage, 'images/mountains.png')
+        // console.log(uploadImgageList)
+        // uploadBytes(storageRef, imgList[0]).then((snapshot) => {
+        //     console.log("success");
+        // })
+    }
+
 
     return (
 
@@ -79,11 +97,11 @@ export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
                                                 <form className='flex flex-col w-full space-y-3 text-left text-gray-900'>
                                                     <label className='flex flex-col'>
                                                         <span className='pb-0.5'>Post title:</span>
-                                                        <input type="text" className='pl-2 pr-1 duration-300 ease-in-out border-2 rounded-md outline-none h-9 focus:border-gray-400 focus:h-12' />
+                                                        <input type="text" onChange={e => setPostTitle(e.target.value)} value={postTitle} className='pl-2 pr-1 duration-300 ease-in-out border-2 rounded-md outline-none h-9 focus:border-gray-400 focus:h-12' />
                                                     </label>
                                                     <label className='flex flex-col '>
                                                         <span className='pb-0.5'>Description:</span>
-                                                        <textarea type="text" className='h-20 p-1 px-2 duration-300 ease-in-out border-2 rounded-md outline-none focus:h-40' />
+                                                        <textarea type="text" onChange={e => setPostDescription(e.target.value)} value={postDescription} className='h-20 p-1 px-2 duration-300 ease-in-out border-2 rounded-md outline-none focus:h-40' />
                                                     </label>
                                                     <div className='w-fit'>
                                                         <span className='pb-0.5'>Select tags:</span>
@@ -105,7 +123,7 @@ export default function PostDetails({ isConfirm, setisConfirm, imgList }) {
                                     <button
                                         type="button"
                                         className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => setisConfirm(false)}
+                                        onClick={handleConfirmPost}
                                     >
                                         Confirm Post
                                     </button>
