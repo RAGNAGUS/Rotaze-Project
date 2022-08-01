@@ -4,11 +4,11 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 
 // conponents
 import PreviewDialog from '../../components/PreviewDialog'
-import PostingDetails from '../../components/PostingDetails'
+import InvalidFileType from '../../components/InvalidFileType'
+import PostDetails from '../../components/PostDetails'
 
 // icons
 import { BsPlusSquare } from 'react-icons/bs'
-import InvalidFileType from '../../components/InvalidFileType'
 
 export default function Upload() {
 
@@ -16,6 +16,7 @@ export default function Upload() {
     const router = useRouter()
 
     const [isError, setIsError] = useState(false)
+    const [isConfirm, setisConfirm] = useState(false)
     const [imgList, setImgList] = useState([])
     const [dragable, setDragable] = useState(false)
     const [isPreview, setIsPreview] = useState(false)
@@ -73,8 +74,10 @@ export default function Upload() {
     return (
         <div className="pt-[83px]">
 
-            {/* Posting Details */}
-            {/* <PostingDetails imgList={imgList} /> */}
+            {/* Post Details */}
+            <div className='fixed'>
+                <PostDetails isConfirm={isConfirm} setisConfirm={setisConfirm} imgList={imgList} />
+            </div>
 
             {/* Invalid File Type Alert */}
             <div className='fixed'>
@@ -88,20 +91,20 @@ export default function Upload() {
                         {isPreview && (
                             <button
                                 onClick={() => setDragable(true)}
-                                className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded"
+                                className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded focus:outline-none"
                             >Edit Preview</button>
                         )}
                         <button
                             onClick={() => setIsPreview(!isPreview)}
-                            className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded"
+                            className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded focus:outline-none"
                         >{isPreview ? 'Hide Preview' : 'Preview'}</button>
                         <button
-                            onClick={() => setDragable(true)}
-                            className="w-1/3 text-white rounded bg-gradient-to-r from-[#2dbdb1] to-[#38ef7d]"
+                            onClick={() => setisConfirm(true)}
+                            className="w-1/3 text-white rounded bg-gradient-to-r from-[#2dbdb1] to-[#38ef7d] focus:outline-none"
                         >Confirm</button>
                         <button
                             onClick={() => resetImageList()}
-                            className="w-1/3 text-white rounded bg-gradient-to-r from-[#CB356B] to-[#ce4d3f]"
+                            className="w-1/3 text-white rounded bg-gradient-to-r from-[#CB356B] to-[#ce4d3f] focus:outline-none"
                         >Reset All</button>
                     </div>
                 )}
@@ -127,8 +130,8 @@ export default function Upload() {
                     })}
                     {imgList.length < 1 && (
                         <div className='flex flex-col space-y-1 md:mr-5'>
-                            <div className='flex items-center justify-end space-x-1 text-gray-600 text-md sm:text-lg md:text-xl lg:text-2xl'>
-                                <span>Start upload image by clicking button</span>
+                            <div className='flex items-center justify-end space-x-1 text-center text-gray-600 text-md sm:text-lg md:text-xl lg:text-2xl'>
+                                <span>Start upload image by click the button</span>
                             </div>
                         </div>
                     )}

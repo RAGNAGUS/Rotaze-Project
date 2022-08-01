@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito;
+    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito no-scrollbar;
   }
 }
 
@@ -19,5 +19,16 @@
   }
   .fps-edit-btn {
     @apply border px-5 py-1 w-14 sm:w-16 rounded-md justify-center text-center cursor-pointer;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }

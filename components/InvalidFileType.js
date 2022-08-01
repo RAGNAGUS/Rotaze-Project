@@ -1,13 +1,12 @@
-import { useState, Fragment } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { ExclamationIcon } from '@heroicons/react/outline'
 
 export default function InvalidFileType({ isError, setIsError }) {
 
     return (
-
-        <Transition show={isError} as={Fragment}>
-            <Dialog onClose={() => setIsError(false)} className="relative z-50">
-
+        <Transition.Root show={isError} as={Fragment}>
+            <Dialog as="div" className="relative z-30" onClose={() => setIsError(false)}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -17,28 +16,54 @@ export default function InvalidFileType({ isError, setIsError }) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-black/30" />
+                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
                 </Transition.Child>
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 scale-95"
-                    enterTo="opacity-100 scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-95"
-                >
-                    <div className='fixed inset-0 flex items-center justify-center'>
-                        <Dialog.Panel className="flex flex-col items-start w-full max-w-sm mx-5 text-left bg-white pl-7 justify-evenly h-52 rounded-xl">
-                            <Dialog.Title className="text-xl font-bold text-gray-800">Only image file can be selected</Dialog.Title>
-                            <Dialog.Description className="text-gray-600">
-                                The image must be a file of type: png, jpg, jpeg
-                            </Dialog.Description>
-                            <button className='h-10 text-xl text-white bg-gray-600 rounded-md w-28' onClick={() => setIsError(false)}>Got it !</button>
-                        </Dialog.Panel>
+
+                <div className="fixed inset-0 z-10 overflow-y-auto">
+                    <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enterTo="opacity-100 translate-y-0 sm:scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        >
+                            <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full">
+                                <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+                                    <div className="sm:flex sm:items-start">
+                                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                                            <ExclamationIcon className="w-6 h-6 text-red-600" aria-hidden="true" />
+                                        </div>
+                                        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                                                Only image file can be selected
+                                            </Dialog.Title>
+                                            <div className="mt-2">
+                                                <p className="text-sm text-gray-500">
+                                                    The image must be a file of type: png, jpg, jpeg
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+                                    <button
+                                        type="button"
+                                        className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm"
+                                        onClick={() => setIsError(false)}
+                                    >
+                                        Got it, thanks
+                                    </button>
+
+                                </div>
+                            </Dialog.Panel>
+                        </Transition.Child>
                     </div>
-                </Transition.Child>
+                </div>
             </Dialog>
-        </Transition>
+        </Transition.Root>
+
     )
 }
