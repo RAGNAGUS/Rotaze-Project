@@ -1,10 +1,11 @@
-import { React, Fragment, useState } from 'react'
+import { React, Fragment, useState, useEffect } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
 import { getDownloadURL, listAll, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase/config';
 import { async } from '@firebase/util';
+import Morpheus from 'morpheus-image-resize';
 
 const animatedComponents = makeAnimated();
 
@@ -38,6 +39,9 @@ const options = [
 
 export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }) {
 
+    // width for image resize
+    let width = 3000
+
     // catch error
     const [error, setError] = useState(null)
 
@@ -49,6 +53,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }
     // upload section
     const [progress, setProgress] = useState(0)
     const [downloadUrlList, setDownloadUrlList] = useState([])
+    const [imageResizeList, setImageResizeList] = useState([])
 
     const handleChange = (selectedOption) => {
         let result = []
@@ -58,27 +63,46 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }
         setPostTags(result)
     }
 
+    useEffect(() => {
+        // reduce file size
+        setImageResizeList([])
+        if (uploadImageList.length > 0) {
+            for (let i = 0; i < uploadImageList.length; i++) {
+                Morpheus.resize(uploadImageList[i], {
+                    width
+                })
+                    .then(canvas => Morpheus.toFile(canvas))
+                    .then(image => {
+                        setImageResizeList(prev => [...prev, image])
+                    });
+            }
+        }
+        return () => {
+            setImageResizeList([])
+        }
+    }, [isConfirm, uploadImageList])
+
+
     const handleConfirmPost = async () => {
         setDownloadUrlList([])
         setProgress(0)
-        console.log("start upload")
 
-        if (uploadImageList.length > 0) {
-            for (let i = 0; i < uploadImageList.length; i++) {
+        if (imageResizeList.length > 0) {
+            for (let i = 0; i < imageResizeList.length; i++) {
                 const storageRef = ref(storage, `files/uid/${i}`);
-                await uploadBytes(storageRef, uploadImageList[i]).then((snapshot) => {
-                    console.log("upload " + i + ' success');
-                    setProgress(Math.round((i / uploadImageList.length) * 100))
-                });
-                const url = await getDownloadURL(ref(storage, storageRef))
-                setDownloadUrlList(prev => [...prev, url])
+                try {
+                    await uploadBytes(storageRef, imageResizeList[i]).then(() => {
+                        setProgress(Math.round((i / imageResizeList.length) * 100))
+                    });
+                    const url = await getDownloadURL(ref(storage, storageRef))
+                    setDownloadUrlList(prev => [...prev, url])
+                } catch (error) {
+                    setError(error)
+                }
             }
             setProgress(100)
         }
     }
-
-    console.log(downloadUrlList)
-    console.log(progress)
 
     return (
 
