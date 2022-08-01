@@ -2,8 +2,9 @@ import { React, Fragment, useState } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, listAll, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase/config';
+import { async } from '@firebase/util';
 
 const animatedComponents = makeAnimated();
 
@@ -37,9 +38,17 @@ const options = [
 
 export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }) {
 
+    // catch error
+    const [error, setError] = useState(null)
+
+    // input from user
     const [postTitle, setPostTitle] = useState('')
     const [postDescription, setPostDescription] = useState('')
     const [postTags, setPostTags] = useState([])
+
+    // upload section
+    const [progress, setProgress] = useState(0)
+    const [downloadUrlList, setDownloadUrlList] = useState([])
 
     const handleChange = (selectedOption) => {
         let result = []
@@ -49,16 +58,27 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }
         setPostTags(result)
     }
 
-    const handleConfirmPost = () => {
+    const handleConfirmPost = async () => {
+        setDownloadUrlList([])
+        setProgress(0)
         console.log("start upload")
 
-        const mountainsRef = ref(storage, 'mountains.jpg');
-        uploadBytes(mountainsRef, uploadImageList[0]).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-        });
-
+        if (uploadImageList.length > 0) {
+            for (let i = 0; i < uploadImageList.length; i++) {
+                const storageRef = ref(storage, `files/uid/${i}`);
+                await uploadBytes(storageRef, uploadImageList[i]).then((snapshot) => {
+                    console.log("upload " + i + ' success');
+                    setProgress(Math.round((i / uploadImageList.length) * 100))
+                });
+                const url = await getDownloadURL(ref(storage, storageRef))
+                setDownloadUrlList(prev => [...prev, url])
+            }
+            setProgress(100)
+        }
     }
 
+    console.log(downloadUrlList)
+    console.log(progress)
 
     return (
 
