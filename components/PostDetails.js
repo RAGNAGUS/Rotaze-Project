@@ -41,7 +41,7 @@ const options = [
 export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, isConditionIsGIF }) {
 
     // width for image resize
-    let width = 3000
+    let width = 800
 
     // catch error
     const [error, setError] = useState(null)
@@ -65,6 +65,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
     }
 
     useEffect(() => {
+        console.log('object');
         // reduce file size
         // skip reducing the file size if it's GIF
         setImageResizeList([])
@@ -73,17 +74,24 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
                 Morpheus.resize(uploadImageList[i], {
                     width
                 })
-                    .then(canvas => Morpheus.toFile(canvas))
+                    .then(canvas => Morpheus.toFile(canvas, `image_${i}`))
                     .then(image => {
                         setImageResizeList(prev => [...prev, image])
                     });
+                setTimeout(() => {
+                    console.log("Delay");
+                }, 100);
             }
         } else {
             setImageResizeList(prev => [...prev, uploadImageList[0]])
         }
         return () => {
+            setImageResizeList([])
         }
-    }, [isConditionIsGIF, isConfirm, uploadImageList, width])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [uploadImageList])
+
+    console.log(imageResizeList);
 
     const handleConfirmPost = async () => {
         setDownloadUrlList([])
@@ -91,9 +99,10 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
 
         if (imageResizeList.length > 0) {
             for (let i = 0; i < imageResizeList.length; i++) {
-                const storageRef = ref(storage, `files/uid/${i}`);
+                const storageRef = ref(storage, `files/uid/${imageResizeList[i].name}`);
                 try {
                     await uploadBytes(storageRef, imageResizeList[i]).then(() => {
+                        console.log(i + ' success')
                         setProgress(Math.round((i / imageResizeList.length) * 100))
                     });
                     const url = await getDownloadURL(ref(storage, storageRef))
