@@ -2,10 +2,11 @@ import { React, Fragment, useState, useEffect } from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Dialog, Transition } from '@headlessui/react'
-import { getDownloadURL, listAll, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
-import { storage } from '../firebase/config';
-import { async } from '@firebase/util';
 import Morpheus from 'morpheus-image-resize';
+
+// firebase
+import { storage } from '../firebase/config';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 const animatedComponents = makeAnimated();
 
@@ -37,7 +38,7 @@ const options = [
     { value: 'vanil9la', label: 'Vanilla' }
 ]
 
-export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }) {
+export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, isConditionIsGIF }) {
 
     // width for image resize
     let width = 3000
@@ -65,8 +66,9 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }
 
     useEffect(() => {
         // reduce file size
+        // skip reducing the file size if it's GIF
         setImageResizeList([])
-        if (uploadImageList.length > 0) {
+        if (uploadImageList.length > 0 && !isConditionIsGIF) {
             for (let i = 0; i < uploadImageList.length; i++) {
                 Morpheus.resize(uploadImageList[i], {
                     width
@@ -76,12 +78,12 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList }
                         setImageResizeList(prev => [...prev, image])
                     });
             }
+        } else {
+            setImageResizeList(prev => [...prev, uploadImageList[0]])
         }
         return () => {
-            setImageResizeList([])
         }
-    }, [isConfirm, uploadImageList])
-
+    }, [isConditionIsGIF, isConfirm, uploadImageList, width])
 
     const handleConfirmPost = async () => {
         setDownloadUrlList([])
