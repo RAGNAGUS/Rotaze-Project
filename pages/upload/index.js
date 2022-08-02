@@ -142,7 +142,7 @@ export default function Upload() {
 
             {/* Post Details */}
             <div className='fixed'>
-                <PostDetails isConfirm={isConfirm} setisConfirm={setisConfirm} uploadImageList={uploadImageList} isConditionIsGIF={isConditionIsGIF} isConditionIsSingleImage={isConditionIsSingleImage} />
+                <PostDetails isConfirm={isConfirm} setisConfirm={setisConfirm} isConditionIsMultipleImage={isConditionIsMultipleImage} uploadImageList={uploadImageList} isConditionIsGIF={isConditionIsGIF} isConditionIsSingleImage={isConditionIsSingleImage} />
             </div>
 
             {/* Invalid File Type Alert */}
