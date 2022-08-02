@@ -37,7 +37,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
     // input from user
     const [postTitle, setPostTitle] = useState('')
     const [postDescription, setPostDescription] = useState('')
-    const [postTags, setPostTags] = useState([])
+    const [tags, setTags] = useState([])
 
     // upload section
     const [generateID, setGenerateID] = useState('')
@@ -55,7 +55,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
         selectedOption.map(option => {
             result = [...result, option.value]
         })
-        setPostTags(result)
+        setTags(result)
     }
 
     // useEffect for set image type
@@ -91,7 +91,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
         // generate id
         setGenerateID(uuidv4())
         // reset every variable
-        setPostTags([])
+        setTags([])
         setProgress(0)
         setThumbnail([])
         setThumbnailUrl([])
@@ -203,14 +203,19 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
             if (progress === 100 && downloadUrlList.length > 0) {
                 let images = downloadUrlList.sort(function (a, b) { return a - b })
                 await setDoc(doc(db, 'posts', `${generateID}`), {
+                    id: generateID,
                     title: postTitle,
                     description: postDescription,
                     createdBy: user.uid,
                     images,
                     thumbnail: thumbnailUrl,
-                    postTags,
+                    tags,
                     postType,
-                    reported: false,
+                    reported: 0,
+                    public: true,
+                    views: 0,
+                    like: 0,
+                    comments: 0,
                     createdAt: serverTimestamp()
                 })
                 setIsEverythingFinish(true)
@@ -228,7 +233,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
             router.push(`/post/${generateID}`)
 
             // reset things after finish upload
-            setPostTags([])
+            setTags([])
             setProgress(0)
             setThumbnail([])
             setThumbnailUrl([])

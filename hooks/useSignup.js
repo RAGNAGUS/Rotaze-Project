@@ -67,10 +67,17 @@ export const useSignup = () => {
     const setDocAfterSignup = async (user, displayName) => {
         try {
             await setDoc(doc(db, 'users', `${user.uid}`), {
-                uid: user.uid,
+                id: user.uid,
                 displayName,
                 email: user.email,
+                profileImage: 'null',
+                about: '',
+                postLiked: [],
+                postReported: [],
+                wallpaper: 'null',
                 online: true,
+                reported: false,
+                role: 1,
                 createdAt: serverTimestamp(),
                 lastSignInTime: serverTimestamp()
             })

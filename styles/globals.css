@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito no-scrollbar;
+    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito;
   }
 }
 
