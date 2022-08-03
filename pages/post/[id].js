@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '../../firebase/config'
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -19,6 +19,7 @@ export default function Post() {
     const [isPending, setIsPending] = useState(false)
 
     const [documents, setDocuments] = useState()
+    const [createrDocs, setCreaterDocs] = useState()
 
     // useEffect for getting document
     useEffect(() => {
@@ -36,6 +37,53 @@ export default function Post() {
         }
         getDocuments()
     }, [param])
+
+    // useEffect for getting creater document
+    useEffect(() => {
+        // create createrDoc reference
+        if (documents) {
+            const createrDocRef = doc(db, 'users', `${documents.createdBy}`);
+            const getCreaterDocs = async () => {
+                try {
+                    setIsPending(true)
+                    const docSnap = await getDoc(createrDocRef);
+                    setCreaterDocs(docSnap.data())
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            getCreaterDocs()
+        }
+    }, [documents])
+
+
+    // useEffect for update views
+    useEffect(() => {
+        // create document reference
+        if (documents) {
+            const docRef = doc(db, 'posts', `${param}`);
+
+            const updateView = async () => {
+                try {
+                    setIsPending(true)
+                    // add 1 view
+                    console.log("updating")
+                    await updateDoc(docRef, {
+                        views: documents.views + 1
+                    })
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            updateView()
+        }
+    }, [documents, param])
+
+    console.log(documents);
+    console.log(createrDocs)
+
 
     // const handleClick = () => {
     //     if (documents.postType == 1) {
@@ -69,15 +117,15 @@ export default function Post() {
                                 <div className="flex flex-col items-center justify-center space-y-2">
                                     <div className="flex flex-col items-center justify-center p-1 ">
                                         <HeartIcon className="w-6 h-6" />
-                                        <div>6,200</div>
+                                        <div>{documents && documents.like}</div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-1">
                                         <ChatAlt2Icon className="w-6 h-6" />
-                                        <div>325</div>
+                                        <div>{documents && documents.comments}</div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-1">
                                         <EyeIcon className="w-6 h-6" />
-                                        <div>1.2M</div>
+                                        <div>{documents && documents.views}</div>
                                     </div>
                                     {/* share */}
                                     <div className="flex flex-col items-center justify-center p-1">
@@ -99,17 +147,17 @@ export default function Post() {
                                 {/* avatar and image views */}
                                 <div className="flex items-center justify-center space-x-3 ">
                                     <div className="w-8 sm:w-10">
-                                        <img src="https://picsum.photos/300" alt="" className="rounded-full" />
+                                        <img src={createrDocs && createrDocs.profileImage} alt="" className="rounded-full" />
                                     </div>
                                     <div>
-                                        <div className="font-semibold">RAGNAGUS</div>
+                                        <div className="font-semibold">{createrDocs && createrDocs.displayName}</div>
                                         <div className="hidden space-x-3 lg:flex ">
                                             <div className="flex space-x-1">
-                                                <div>1,650,005</div>
+                                                <div>{documents && documents.views}</div>
                                                 <div>views</div>
                                             </div>
                                             <div className="hidden lg:inline-block">/</div>
-                                            <div>4 hour ago</div>
+                                            <div>{documents && documents.createdAt.toDate().toString()}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -122,22 +170,22 @@ export default function Post() {
                             <div className="flex justify-end pb-1 pr-3 text-sm border-b lg:border-0">
                                 <div className="flex space-x-3 lg:hidden">
                                     <div className="flex space-x-1">
-                                        <div>1,650,005</div>
+                                        <div>{documents && documents.views}</div>
                                         <div>views</div>
                                     </div>
                                     <div>/</div>
-                                    <div>4 hour ago</div>
+                                    <div>{documents && documents.createdAt.toDate().toString()}</div>
                                 </div>
                             </div>
                             {/* title and descriptions */}
                             <div className="flex flex-col items-start justify-center py-3 pl-4 pr-10 space-x-3 space-y-3 text-sm text-gray-800">
-                                <div className="text-xl font-semibold">reasons people broke up</div>
-                                <div className="max-w-fit">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam nobis tempora, impedit eveniet doloremque voluptatem modi dolores velit. Rem, laudantium!</div>
+                                <div className="text-xl font-semibold">{documents && documents.title}</div>
+                                <div className="max-w-fit">{documents && documents.description}</div>
                             </div>
 
                             {/* image content */}
                             <div className="flex flex-col items-center justify-center w-full py-1">
-                                <img src="https://picsum.photos/500" alt="" />
+                                <img src={documents && documents.images[0]} alt="" />
                             </div>
                             {/* ads banner bottom */}
                             <div className="flex items-center justify-center w-full bg-orange-300 border h-36">
@@ -153,15 +201,15 @@ export default function Post() {
                                         <div className="flex items-center justify-center space-x-5">
                                             <div className="flex flex-col items-center justify-center">
                                                 <HeartIcon className="w-6 h-6" />
-                                                <div>6,200</div>
+                                                <div>{documents && documents.like}</div>
                                             </div>
                                             <div className="flex flex-col items-center justify-center">
                                                 <ChatAlt2Icon className="w-6 h-6" />
-                                                <div>325</div>
+                                                <div>{documents && documents.comments}</div>
                                             </div>
                                             <div className="flex flex-col items-center justify-center">
                                                 <EyeIcon className="w-6 h-6" />
-                                                <div>1.2M</div>
+                                                <div>{documents && documents.views}</div>
                                             </div>
                                         </div>
                                         {/* share */}
