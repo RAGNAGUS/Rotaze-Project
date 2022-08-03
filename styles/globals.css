@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito;
+    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito break-word;
   }
 }
 
@@ -30,5 +30,10 @@
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+  .break-word {
+    word-wrap: break-word; /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap; /* current browsers */
   }
 }

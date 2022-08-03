@@ -188,15 +188,15 @@ export default function Post() {
                             </div>
 
                             {/* title and descriptions */}
-                            <div className="flex flex-col items-start justify-center py-3 pl-4 pr-10 space-x-3 space-y-3 text-sm text-gray-800">
-                                <div className="text-xl font-semibold">{documents && documents.title}</div>
-                                <div className="">{documents && documents.description}</div>
+                            <div className="flex flex-col items-start justify-center max-w-3xl py-3 pl-4 pr-10 space-x-3 space-y-3 text-sm text-gray-800 ">
+                                <div className="w-full text-xl font-semibold">{documents && documents.title}</div>
+                                <div className="w-full">{documents && documents.description}</div>
                             </div>
 
                             {/* image content */}
                             <div className="flex items-center justify-center w-full py-1">
                                 <div className="flex items-center justify-center w-11/12 shadow-inner">
-                                    <img src={documents && documents.images[0]} alt="" />
+                                    <img src={documents && documents.images[0]} alt="" className="w-full" />
                                 </div>
                             </div>
                             {/* ads banner bottom */}
