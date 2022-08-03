@@ -9,6 +9,7 @@ import { EyeIcon } from "@heroicons/react/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { ShareIcon } from "@heroicons/react/outline";
 import { ChevronRightIcon } from "@heroicons/react/outline";
+import { formatDistanceToNow } from 'date-fns'
 
 export default function Post() {
 
@@ -81,9 +82,10 @@ export default function Post() {
         }
     }, [documents, param])
 
-    console.log(documents);
-    console.log(createrDocs)
-
+    // console.log(documents)
+    // console.log(createrDocs)
+    console.log("date from doc - " + documents.createdAt.toDate())
+    console.log("date from new - " + new Date());
 
     // const handleClick = () => {
     //     if (documents.postType == 1) {
@@ -157,7 +159,7 @@ export default function Post() {
                                                 <div>views</div>
                                             </div>
                                             <div className="hidden lg:inline-block">/</div>
-                                            <div>{documents && documents.createdAt.toDate().toString()}</div>
+                                            <div>{documents && formatDistanceToNow(documents.createdAt.toDate(), { addSuffix: true })}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -174,7 +176,7 @@ export default function Post() {
                                         <div>views</div>
                                     </div>
                                     <div>/</div>
-                                    <div>{documents && documents.createdAt.toDate().toString()}</div>
+                                    <div>{documents && formatDistanceToNow(documents.createdAt.toDate(), { addSuffix: true })}</div>
                                 </div>
                             </div>
                             {/* title and descriptions */}
