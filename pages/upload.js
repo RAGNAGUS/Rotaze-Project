@@ -128,7 +128,7 @@ export default function Upload() {
         setUploadImageList(uploadNewList)
     }
     return (
-        <div className="pt-[83px]">
+        <div className="pt-[83px] h-screen">
 
             {/* upload condition */}
             <UploadCondition
@@ -286,7 +286,7 @@ export default function Upload() {
                     {imgList.length < 1 && (
                         <div>
                             <button onClick={() => setIsSelectCondition(false)}
-                                className="static w-20 h-10 mb-2 text-gray-800 border border-gray-300 rounded-md shadow-sm md:fixed md:mb-0">Change</button>
+                                className="static w-20 h-10 mt-3 mb-2 ml-3 text-gray-800 border border-gray-300 rounded-md shadow-sm md:fixed md:mb-0">Change</button>
                         </div>
                     )}
                     <div className="flex flex-wrap items-center justify-center ">

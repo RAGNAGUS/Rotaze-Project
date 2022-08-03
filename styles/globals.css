@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito break-word;
+    @apply bg-gradient-to-r from-[#ECE9E6] via-[#F3F4F6] to-[#ECE9E6] font-nunito break-word no-scrollbar;
   }
 }
 
@@ -35,5 +35,11 @@
     word-wrap: break-word; /* IE 5.5-7 */
     white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
     white-space: pre-wrap; /* current browsers */
+  }
+  .slider-thumb::-webkit-slider-thumb {
+    @apply appearance-none w-3 h-3 rounded-full;
+  }
+  .slider-thumb::-webkit-slider-thumb:hover {
+    @apply invisible;
   }
 }
