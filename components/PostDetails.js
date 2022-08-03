@@ -214,7 +214,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
                     reported: 0,
                     public: true,
                     views: 0,
-                    like: 0,
+                    likes: 0,
                     comments: 0,
                     createdAt: serverTimestamp()
                 })

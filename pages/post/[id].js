@@ -10,17 +10,23 @@ import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { ShareIcon } from "@heroicons/react/outline";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import { formatDistanceToNow } from 'date-fns'
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { async } from "@firebase/util";
 
 export default function Post() {
 
     const router = useRouter()
     const param = router.query.id
 
+    const { user } = useAuthContext()
+
     const [error, setError] = useState(null)
     const [isPending, setIsPending] = useState(false)
 
     const [documents, setDocuments] = useState()
     const [createrDocs, setCreaterDocs] = useState()
+
+    const [isUserLiked, setIsUserLiked] = useState(false)
 
     // useEffect for getting document
     useEffect(() => {
@@ -37,7 +43,7 @@ export default function Post() {
             }
         }
         getDocuments()
-    }, [param])
+    }, [param, isUserLiked])
 
     // useEffect for getting creater document
     useEffect(() => {
@@ -58,34 +64,46 @@ export default function Post() {
         }
     }, [documents])
 
+    // useEffect for update liked status
+    useEffect(() => {
+
+    }, [])
 
     // useEffect for update views
     useEffect(() => {
         // create document reference
         if (documents) {
             const docRef = doc(db, 'posts', `${param}`);
-
             const updateView = async () => {
-                try {
-                    setIsPending(true)
-                    // add 1 view
-                    console.log("updating")
-                    await updateDoc(docRef, {
-                        views: documents.views + 1
-                    })
-                    setIsPending(false)
-                } catch (error) {
-                    setError(error)
-                }
+                await updateDoc(docRef, {
+                    views: documents.views + 1
+                })
             }
             updateView()
         }
     }, [documents, param])
 
+    // handleClick like button
+    const handleClickLike = async () => {
+
+
+    }
+    // handleClick comment button
+    const handleClickComment = () => {
+        return
+    }
+    // handleClick report button
+    const handleClickReport = () => {
+        return
+    }
+    // handleClick share button
+    const handleClickShare = () => {
+        return
+    }
+
+
     // console.log(documents)
     // console.log(createrDocs)
-    console.log("date from doc - " + documents.createdAt.toDate())
-    console.log("date from new - " + new Date());
 
     // const handleClick = () => {
     //     if (documents.postType == 1) {
@@ -99,7 +117,7 @@ export default function Post() {
     // }
 
     return (
-        <div className="pt-[73px] bg-white h-screen">
+        <div className="pt-[73px] bg-white">
             <div className="grid w-full grid-cols-1 sm:grid-cols-6 lg:grid-cols-5 justify-evenly">
                 {/* left content */}
                 <div className="hidden bg-[#efeeee] lg:inline-block">
@@ -118,8 +136,8 @@ export default function Post() {
                                 {/* likes comments views */}
                                 <div className="flex flex-col items-center justify-center space-y-2">
                                     <div className="flex flex-col items-center justify-center p-1 ">
-                                        <HeartIcon className="w-6 h-6" />
-                                        <div>{documents && documents.like}</div>
+                                        <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : 'white'}`} className='w-6 h-6 cursor-pointer' />
+                                        <div>{documents && documents.likes}</div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-1">
                                         <ChatAlt2Icon className="w-6 h-6" />
@@ -145,7 +163,7 @@ export default function Post() {
                         </div>
                         {/* main content */}
                         <div className="ml-0 lg:ml-[96px]  bg-white w-full flex flex-col space-y-1">
-                            <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:border-b md:py-4 lg:py-6 lg:pr-20 lg:pl-0">
+                            <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 md:py-4 lg:py-6 lg:pr-20 lg:pl-0">
                                 {/* avatar and image views */}
                                 <div className="flex items-center justify-center space-x-3 ">
                                     <div className="w-8 sm:w-10">
@@ -153,12 +171,12 @@ export default function Post() {
                                     </div>
                                     <div>
                                         <div className="font-semibold">{createrDocs && createrDocs.displayName}</div>
-                                        <div className="hidden space-x-3 lg:flex ">
+                                        <div className="flex space-x-1 sm:space-x-3 ">
                                             <div className="flex space-x-1">
                                                 <div>{documents && documents.views}</div>
                                                 <div>views</div>
                                             </div>
-                                            <div className="hidden lg:inline-block">/</div>
+                                            <div>/</div>
                                             <div>{documents && formatDistanceToNow(documents.createdAt.toDate(), { addSuffix: true })}</div>
                                         </div>
                                     </div>
@@ -168,26 +186,18 @@ export default function Post() {
                                     <ChevronRightIcon className="w-4 h-4" />
                                 </button>
                             </div>
-                            {/* views and post time hidden for large screen */}
-                            <div className="flex justify-end pb-1 pr-3 text-sm border-b lg:border-0">
-                                <div className="flex space-x-3 lg:hidden">
-                                    <div className="flex space-x-1">
-                                        <div>{documents && documents.views}</div>
-                                        <div>views</div>
-                                    </div>
-                                    <div>/</div>
-                                    <div>{documents && formatDistanceToNow(documents.createdAt.toDate(), { addSuffix: true })}</div>
-                                </div>
-                            </div>
+
                             {/* title and descriptions */}
                             <div className="flex flex-col items-start justify-center py-3 pl-4 pr-10 space-x-3 space-y-3 text-sm text-gray-800">
                                 <div className="text-xl font-semibold">{documents && documents.title}</div>
-                                <div className="max-w-fit">{documents && documents.description}</div>
+                                <div className="">{documents && documents.description}</div>
                             </div>
 
                             {/* image content */}
-                            <div className="flex flex-col items-center justify-center w-full py-1">
-                                <img src={documents && documents.images[0]} alt="" />
+                            <div className="flex items-center justify-center w-full py-1">
+                                <div className="flex items-center justify-center w-11/12 shadow-inner">
+                                    <img src={documents && documents.images[0]} alt="" />
+                                </div>
                             </div>
                             {/* ads banner bottom */}
                             <div className="flex items-center justify-center w-full bg-orange-300 border h-36">
@@ -203,7 +213,7 @@ export default function Post() {
                                         <div className="flex items-center justify-center space-x-5">
                                             <div className="flex flex-col items-center justify-center">
                                                 <HeartIcon className="w-6 h-6" />
-                                                <div>{documents && documents.like}</div>
+                                                <div>{documents && documents.likes}</div>
                                             </div>
                                             <div className="flex flex-col items-center justify-center">
                                                 <ChatAlt2Icon className="w-6 h-6" />
