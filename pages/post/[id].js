@@ -1,17 +1,22 @@
+/* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router"
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from '../../firebase/config'
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useAuthContext } from "../../hooks/useAuthContext";
+
+// firebase
+import { db } from '../../firebase/config'
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
+// date fns
+import { formatDistanceToNow } from 'date-fns'
+
+// import icons
+import { EyeIcon } from "@heroicons/react/outline";
+import { ShareIcon } from "@heroicons/react/outline";
 import { HeartIcon } from "@heroicons/react/outline";
 import { ChatAlt2Icon } from "@heroicons/react/outline";
-import { EyeIcon } from "@heroicons/react/outline";
-import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { ShareIcon } from "@heroicons/react/outline";
 import { ChevronRightIcon } from "@heroicons/react/outline";
-import { formatDistanceToNow } from 'date-fns'
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { async } from "@firebase/util";
+import { ExclamationCircleIcon } from "@heroicons/react/outline";
 
 export default function Post() {
 
@@ -196,7 +201,7 @@ export default function Post() {
                             {/* image content */}
                             <div className="flex items-center justify-center w-full py-1">
                                 <div className="flex items-center justify-center w-11/12 shadow-inner">
-                                    <img src={documents && documents.images[0]} alt="" className="w-full" />
+                                    <img src={documents && documents.images[0]} alt="" className="w-fit" />
                                 </div>
                             </div>
                             {/* ads banner bottom */}
