@@ -1,15 +1,15 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 // conponents
-import PreviewDialog from '../../components/PreviewDialog'
-import InvalidFileType from '../../components/InvalidFileType'
-import PostDetails from '../../components/PostDetails'
+import PreviewDialog from '../components/PreviewDialog'
+import InvalidFileType from '../components/InvalidFileType'
+import PostDetails from '../components/PostDetails'
 
 // icons
 import { BsPlusSquare } from 'react-icons/bs'
-import UploadCondition from '../../components/UploadCondition'
+import UploadCondition from '../components/UploadCondition'
 
 export default function Upload() {
 
@@ -183,7 +183,7 @@ export default function Upload() {
 
             {/* single image condition */}
             {isSelectCondition && isConditionIsSingleImage && (
-                <div className={`w-4/6 p-3 mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
+                <div className={`w-5/6 lg:w-4/6  p-3 mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
                     {imgList.length < 1 && (
                         <div>
                             <button onClick={() => setIsSelectCondition(false)}
@@ -234,7 +234,7 @@ export default function Upload() {
 
             {/* multiple image condition */}
             {isSelectCondition && isConditionIsMultipleImage && (
-                <div className={`w-4/6 p-3 mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
+                <div className={`w-5/6 lg:w-4/6  p-3 mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
                     {imgList.length < 1 && (
                         <div>
                             <button onClick={() => setIsSelectCondition(false)}
@@ -282,7 +282,7 @@ export default function Upload() {
 
             {/* gif image condition */}
             {isSelectCondition && isConditionIsGIF && (
-                <div className={`w-4/6 p-3 mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
+                <div className={`w-5/6 lg:w-4/6  mx-auto ${imgList.length > 0 ? 'mt-[72px]' : ''} bg-white border shadow-sm `}>
                     {imgList.length < 1 && (
                         <div>
                             <button onClick={() => setIsSelectCondition(false)}
