@@ -210,8 +210,8 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
     useEffect(() => {
         const uploadDocuments = async () => {
             if (progress === 100 && downloadUrlList.length > 0) {
-                let title = postTitle.length < 1 ? 'Title' : postTitle
-                let description = postDescription.length < 1 ? 'Description' : postDescription
+                let title = postTitle.length < 1 ? 'unnamed' : postTitle
+                let description = postDescription.length < 1 ? '' : postDescription
                 await setDoc(doc(db, 'posts', `${generateID}`), {
                     id: generateID,
                     title,

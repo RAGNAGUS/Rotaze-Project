@@ -134,7 +134,7 @@ export default function Post() {
                 <div className="grid w-full grid-cols-1 sm:grid-cols-6 lg:grid-cols-5 justify-evenly">
                     {/* left content */}
                     <div className="hidden bg-[#efeeee] lg:inline-block">
-                        <div className="flex items-center justify-center h-screen mx-16 my-10 bg-orange-300">
+                        <div className="flex items-center justify-center invisible h-screen mx-16 my-10 bg-orange-300">
                             <div className="text-2xl text-center text-white">
                                 Ads banner
                             </div>
@@ -144,7 +144,7 @@ export default function Post() {
                     <div className="col-span-1 sm:col-span-4 lg:col-span-3">
                         <div className="flex">
                             {/* behavior bar */}
-                            <div className="fixed items-start justify-end hidden w-24 h-screen bg-white lg:flex">
+                            <div className="fixed items-start justify-center hidden w-24 h-screen duration-300 bg-white opacity-60 hover:opacity-100 lg:flex">
                                 <div className="flex flex-col items-center justify-center w-8/12 py-3 space-y-5 text-sm text-gray-600 bg-white border rounded-lg shadow-md mt-72">
                                     {/* likes comments views */}
                                     <div className="flex flex-col items-center justify-center space-y-2">
@@ -175,8 +175,8 @@ export default function Post() {
                                 </div>
                             </div>
                             {/* main content */}
-                            <div className="ml-0 lg:ml-[96px]  bg-white w-full flex flex-col space-y-1">
-                                <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 md:py-4 lg:py-6 lg:pr-20 lg:pl-0">
+                            <div className="ml-0 mr-0 lg:ml-[96px] lg:mr-[96px]  bg-white w-full flex flex-col ">
+                                <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:pr-0 md:py-4 lg:py-6 lg:pl-0">
                                     {/* avatar and image views */}
                                     <div className="flex items-center justify-center space-x-3 ">
                                         <div className="w-8 sm:w-10">
@@ -184,13 +184,13 @@ export default function Post() {
                                         </div>
                                         <div>
                                             <div className="font-semibold cursor-pointer hover:font-bold">{createrDocs && createrDocs.displayName}</div>
-                                            <div className="flex space-x-1 sm:space-x-3 ">
+                                            <div className="flex space-x-1 text-[13px] sm:text-sm ">
                                                 <div className="flex space-x-1">
                                                     <div>{documents && documents.views}</div>
                                                     <div>views</div>
                                                 </div>
-                                                <div>/</div>
-                                                <div>{documents && formatDistanceToNow(documents.createdAt.toDate(), { addSuffix: true })}</div>
+                                                <div>·</div>
+                                                <div>{documents && formatDistanceToNow(documents?.createdAt.toDate(), { addSuffix: true })}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -199,16 +199,9 @@ export default function Post() {
                                         <ChevronRightIcon className="w-4 h-4" />
                                     </button>
                                 </div>
-
-                                {/* title and descriptions */}
-                                <div className="flex flex-col items-start justify-center max-w-3xl py-3 pl-4 pr-10 space-x-3 space-y-3 text-sm text-gray-800 ">
-                                    <div className="w-full text-3xl font-semibold">{documents && documents.title}</div>
-                                    <div className="w-full text-base">{documents && documents.description}</div>
-                                </div>
-
                                 {/* image content */}
-                                <div className="flex items-center justify-center w-full py-1">
-                                    <div className="relative flex flex-col items-center justify-center w-10/12 border-2 shadow-inner">
+                                <div className="flex items-center justify-center w-full">
+                                    <div className="relative flex flex-col justify-center w-full ">
                                         <div className="absolute flex items-center justify-center w-full h-full">
                                             {showThreeSixty && (
                                                 <img src="/360-logo.png" alt="360 logo" className="w-[30%]" />
@@ -231,8 +224,25 @@ export default function Post() {
 
                                     </div>
                                 </div>
+                                {/* Tags */}
+                                <div className="w-full py-3 pl-4 lg:pl-0">
+                                    <div className="flex gap-1">
+                                        {documents && documents.tags.map((tag, index) => (
+                                            <div key={index} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
+                                                #{tag}
+                                            </div>
+                                        ))}
+
+                                    </div>
+                                </div>
+                                {/* title and descriptions */}
+                                <div className="flex flex-col items-start justify-center py-3 pl-6 pr-10 text-gray-800">
+                                    <div className="w-full text-xl font-semibold sm:text-2xl md:text-3xl">{documents && documents.title}</div>
+                                    <div className="w-full text-[8px] md:text-[10px] font-semibold pb-2">{documents && documents?.createdAt.toDate().toString()}</div>
+                                    <div className="flex-wrap w-full text-base indent-8 overflow-clip h-36">{documents && documents.description}</div>
+                                </div>
                                 {/* ads banner bottom */}
-                                <div className="flex items-center justify-center w-full bg-orange-300 border h-36">
+                                <div className="flex items-center justify-center invisible w-full bg-orange-300 border h-36">
                                     <div className="text-3xl text-center text-white">Ads banner</div>
                                 </div>
                                 <div>comments section</div>
@@ -274,9 +284,9 @@ export default function Post() {
                     </div>
                     {/* right content */}
                     <div className="hidden bg-[#efeeee] sm:col-span-2 lg:col-span-1 sm:inline-block">
-                        <div className="flex items-center justify-center mx-6 my-10 bg-orange-300 h-80">
+                        {/* <div className="flex items-center justify-center invisible mx-6 my-10 bg-orange-300 h-80">
                             <div className="text-2xl text-center text-white">Ads banner</div>
-                        </div>
+                        </div> */}
                         <div className="p-3 mx-6 bg-white rounded h-fit">
                             <div className="pb-2 text-gray-600 border-b text-md">most popular in this week</div>
                             <div className="px-2 py-2 space-y-3">
@@ -302,7 +312,8 @@ export default function Post() {
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
