@@ -53,7 +53,7 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
         <div className={`fixed z-20 -mt-[10px] pt-20 pl-5 w-screen h-screen ${dragable ? 'backdrop-opacity-10 backdrop-invert bg-black/30' : 'pointer-events-none'}`}>
             {imgList.length > 0 && (
                 < Draggable Draggable bounds="parent" nodeRef={nodeRef}>
-                    <div ref={nodeRef} className="fixed flex flex-col duration-300 ease-out bg-gray-800 shadow-2xl w-52 md:w-80 lg:w-96 sm:w-72">
+                    <div ref={nodeRef} className="fixed flex flex-col duration-300 ease-out bg-gray-800 rounded-lg shadow-2xl w-52 md:w-80 lg:w-96 sm:w-72">
                         <div className={`flex items-center justify-center ${dragable ? 'my-1' : 'mt-[4px]'}`}>
                             {dragable && (
                                 <div className="cursor-grab">
@@ -61,7 +61,8 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
                                 </div>
                             )}
                         </div>
-                        <div className={`flex items-center justify-center mx-1 mb-1 ${dragable ? 'mx-[8px]' : ''} bg-white  border-gray-300 shadow-inner`}>
+                        {/* image animation */}
+                        <div className={`flex items-center justify-center mx-1 mb-1 ${dragable ? 'mx-[8px]' : ''} bg-white  border-gray-300 shadow-inner rounded-md`}>
                             <div className="pointer-events-none">
                                 <img src={imgList[showImg]} alt="" />
                             </div>
@@ -83,7 +84,7 @@ export default function PreviewDialog({ dragable, setDragable, imgList }) {
 
                                 <button
                                     onClick={() => setDragable(false)}
-                                    className="p-3 mx-3 text-gray-800 bg-white rounded-md"
+                                    className="p-3 mx-3 font-bold text-gray-800 bg-white rounded-md text-md md:text-xl"
                                 >
                                     Confirm
                                 </button>

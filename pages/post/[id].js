@@ -8,7 +8,7 @@ import { db } from '../../firebase/config'
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 // date fns
-import { formatDistanceToNow } from 'date-fns'
+import { format, formatDistanceToNow } from 'date-fns'
 
 // import icons
 import { EyeIcon } from "@heroicons/react/outline";
@@ -121,8 +121,6 @@ export default function Post() {
         return
     }
 
-
-
     const onCardChange = (e) => {
         setSliderValue(e)
         setShowThreeSixty(false)
@@ -144,7 +142,7 @@ export default function Post() {
                     <div className="col-span-1 sm:col-span-4 lg:col-span-3">
                         <div className="flex">
                             {/* behavior bar */}
-                            <div className="fixed items-start justify-center hidden w-24 h-screen duration-300 bg-white opacity-60 hover:opacity-100 lg:flex">
+                            <div className="fixed items-start justify-center hidden w-24 h-screen duration-300 bg-white opacity-80 hover:opacity-100 lg:flex">
                                 <div className="flex flex-col items-center justify-center w-8/12 py-3 space-y-5 text-sm text-gray-600 bg-white border rounded-lg shadow-md mt-72">
                                     {/* likes comments views */}
                                     <div className="flex flex-col items-center justify-center space-y-2">
@@ -203,10 +201,12 @@ export default function Post() {
                                 <div className="flex items-center justify-center w-full">
                                     <div className="relative flex flex-col justify-center w-full ">
                                         <div className="absolute flex items-center justify-center w-full h-full">
+                                            {/* 360 logo */}
                                             {showThreeSixty && (
-                                                <img src="/360-logo.png" alt="360 logo" className="w-[30%]" />
+                                                <img src="/360-logo.png" alt="360 logo" className="w-[30%] opacity-80" />
                                             )}
                                         </div>
+                                        {/* slider */}
                                         <div className="absolute w-full h-full">
                                             <input
                                                 onChange={e => onCardChange(e.target.value)}
@@ -217,29 +217,31 @@ export default function Post() {
                                                 id="myRange" />
                                         </div>
                                         {documents && documents?.images.sort().map((image, index) => (
-                                            <div key={index}>
-                                                <img src={image} alt="" className={`w-full ${index == sliderValue ? 'inline-block' : 'hidden'} pointer-events-none`} />
+                                            <div key={index} className="flex justify-center">
+                                                <img src={image} alt="main content" className={`max-h-[360px] sm:max-h-[480px] lg:max-h-[600px] border ${index == sliderValue ? 'inline-block' : 'hidden'} pointer-events-none`} />
                                             </div>
                                         ))}
 
                                     </div>
                                 </div>
                                 {/* Tags */}
-                                <div className="w-full py-3 pl-4 lg:pl-0">
-                                    <div className="flex gap-1">
-                                        {documents && documents.tags.map((tag, index) => (
-                                            <div key={index} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
-                                                #{tag}
-                                            </div>
-                                        ))}
+                                {documents.tags.length > 0 && (
+                                    <div className="w-full py-3 pl-4 lg:pl-0">
+                                        <div className="flex gap-1">
+                                            {documents && documents.tags.map((tag, index) => (
+                                                <div key={index} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
+                                                    #{tag}
+                                                </div>
+                                            ))}
 
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                                 {/* title and descriptions */}
-                                <div className="flex flex-col items-start justify-center py-3 pl-6 pr-10 text-gray-800">
-                                    <div className="w-full text-xl font-semibold sm:text-2xl md:text-3xl">{documents && documents.title}</div>
-                                    <div className="w-full text-[8px] md:text-[10px] font-semibold pb-2">{documents && documents?.createdAt.toDate().toString()}</div>
-                                    <div className="flex-wrap w-full text-base indent-8 overflow-clip h-36">{documents && documents.description}</div>
+                                <div className="flex flex-col items-start justify-center py-6 pl-6 pr-10 text-gray-800">
+                                    <div className="w-full text-xl sm:text-2xl md:text-3xl">{documents && documents.title}</div>
+                                    <div className="w-full text-[8px] md:text-[12px]  pb-2">{documents && format(documents?.createdAt.toDate(), 'dd MMMM yyyy')}</div>
+                                    <div className="flex-wrap w-full text-base indent-4 overflow-clip h-36">{documents && documents.description}</div>
                                 </div>
                                 {/* ads banner bottom */}
                                 <div className="flex items-center justify-center invisible w-full bg-orange-300 border h-36">
