@@ -40,18 +40,55 @@ export default function Upload() {
     const handleAddImage = (e) => {
         e.preventDefault()
         setIsError(false)
+        let fileSizeLimit = 5000000
         let selectedImg = e.target.files
 
         if (selectedImg.length > 0) {
             if (isConditionIsMultipleImage) {
                 for (let i = 0; i < selectedImg.length; i++) {
-                    switch (selectedImg[i].type) {
+                    if (selectedImg[i].size > fileSizeLimit) {
+                        setIsError(true)
+                        setErrorMsg({
+                            title: 'Image is too large',
+                            detail: 'Please reduce the size of the image file below 5 MB'
+                        })
+                    } else {
+                        switch (selectedImg[i].type) {
+                            case 'image/png':
+                            case 'image/jpg':
+                            case 'image/jpeg':
+                                const imgLinkList = URL.createObjectURL(selectedImg[i])
+                                setImgList((prev) => [...prev, imgLinkList])
+                                const uploadLink = selectedImg[i]
+                                setUploadImageList(prev => [...prev, uploadLink])
+                                break;
+                            default:
+                                setIsError(true)
+                                setErrorMsg({
+                                    title: 'Only image file can be selected',
+                                    detail: 'The image must be a file of type: png, jpg, jpeg'
+                                })
+                                break;
+                        }
+                    }
+
+                }
+            }
+            if (isConditionIsSingleImage) {
+                if (selectedImg[0].size > fileSizeLimit) {
+                    setIsError(true)
+                    setErrorMsg({
+                        title: 'Image is too large',
+                        detail: 'Please reduce the size of the image file below 5 MB'
+                    })
+                } else {
+                    switch (selectedImg[0].type) {
                         case 'image/png':
                         case 'image/jpg':
                         case 'image/jpeg':
-                            const imgLinkList = URL.createObjectURL(selectedImg[i])
+                            const imgLinkList = URL.createObjectURL(selectedImg[0])
                             setImgList((prev) => [...prev, imgLinkList])
-                            const uploadLink = selectedImg[i]
+                            const uploadLink = selectedImg[0]
                             setUploadImageList(prev => [...prev, uploadLink])
                             break;
                         default:
@@ -63,42 +100,33 @@ export default function Upload() {
                             break;
                     }
                 }
-            }
-            if (isConditionIsSingleImage) {
-                switch (selectedImg[0].type) {
-                    case 'image/png':
-                    case 'image/jpg':
-                    case 'image/jpeg':
-                        const imgLinkList = URL.createObjectURL(selectedImg[0])
-                        setImgList((prev) => [...prev, imgLinkList])
-                        const uploadLink = selectedImg[0]
-                        setUploadImageList(prev => [...prev, uploadLink])
-                        break;
-                    default:
-                        setIsError(true)
-                        setErrorMsg({
-                            title: 'Only image file can be selected',
-                            detail: 'The image must be a file of type: png, jpg, jpeg'
-                        })
-                        break;
-                }
+
             }
             if (isConditionIsGIF) {
-                switch (selectedImg[0].type) {
-                    case 'image/gif':
-                        const imgLinkList = URL.createObjectURL(selectedImg[0])
-                        setImgList((prev) => [...prev, imgLinkList])
-                        const uploadLink = selectedImg[0]
-                        setUploadImageList(prev => [...prev, uploadLink])
-                        break;
-                    default:
-                        setIsError(true)
-                        setErrorMsg({
-                            title: 'Only image file can be selected',
-                            detail: 'The image must be a file of type: gif'
-                        })
-                        break;
+                if (selectedImg[0].size > fileSizeLimit) {
+                    setIsError(true)
+                    setErrorMsg({
+                        title: 'Image is too large',
+                        detail: 'Please reduce the size of the image file below 5 MB'
+                    })
+                } else {
+                    switch (selectedImg[0].type) {
+                        case 'image/gif':
+                            const imgLinkList = URL.createObjectURL(selectedImg[0])
+                            setImgList((prev) => [...prev, imgLinkList])
+                            const uploadLink = selectedImg[0]
+                            setUploadImageList(prev => [...prev, uploadLink])
+                            break;
+                        default:
+                            setIsError(true)
+                            setErrorMsg({
+                                title: 'Only image file can be selected',
+                                detail: 'The image must be a file of type: gif'
+                            })
+                            break;
+                    }
                 }
+
             }
         }
         e.target.value = ''
@@ -127,6 +155,17 @@ export default function Upload() {
         setImgList(newList)
         setUploadImageList(uploadNewList)
     }
+
+    // if select multiple image but upload single image change it to single image
+    const fileTypeCheck = () => {
+        if (imgList.length < 2 && isConditionIsMultipleImage) {
+            setIsConditionIsGIF(false)
+            setIsConditionIsSingleImage(true)
+            setIsConditionIsMultipleImage(false)
+        }
+        setisConfirm(true)
+    }
+
     return (
         <div className="pt-[83px] h-screen">
 
@@ -167,7 +206,7 @@ export default function Upload() {
                             >{isPreview ? 'Hide Preview' : 'Preview'}</button>
                         )}
                         <button
-                            onClick={() => setisConfirm(true)}
+                            onClick={fileTypeCheck}
                             className={`${isConditionIsMultipleImage ? 'w-1/3' : 'w-1/2'} text-white rounded bg-gradient-to-r from-[#2dbdb1] to-[#38ef7d] focus:outline-none`}
                         >Confirm</button>
                         <button

@@ -30,7 +30,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
     // width for image resize
     let widthMultiImage = 800
     let widthSingleImage = 1920
-    let widthThumbnail = 800
+    let widthThumbnail = 360
 
     //options for Selection box
     const [options, setOptions] = useState([])
@@ -239,15 +239,15 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
             // close loading popup
             setIsStartUpload(false)
 
-            //push user to uploaded post page
-            router.push(`/post/${generateID}`)
-
             // reset things after finish upload
             setTags([])
             setProgress(0)
             setThumbnail([])
             setThumbnailUrl([])
             setImageResizeList([])
+
+            //push user to uploaded post page
+            router.push(`/post/${generateID}`)
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

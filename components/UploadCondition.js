@@ -48,7 +48,7 @@ export default function UploadCondition({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+                    <div className="fixed inset-0 transition-opacity bg-gray-300 bg-opacity-75" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-20 overflow-y-auto">

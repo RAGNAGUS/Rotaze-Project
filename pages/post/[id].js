@@ -127,11 +127,11 @@ export default function Post() {
     }
 
     return (
-        <div className="pt-[73px] bg-white">
+        <div className="pt-[73px]">
             {documents && (
                 <div className="grid w-full grid-cols-1 sm:grid-cols-6 lg:grid-cols-5 justify-evenly">
                     {/* left content */}
-                    <div className="hidden bg-[#efeeee] lg:inline-block">
+                    <div className="hidden lg:inline-block">
                         <div className="flex items-center justify-center invisible h-screen mx-16 my-10 bg-orange-300">
                             <div className="text-2xl text-center text-white">
                                 Ads banner
@@ -142,8 +142,8 @@ export default function Post() {
                     <div className="col-span-1 sm:col-span-4 lg:col-span-3">
                         <div className="flex">
                             {/* behavior bar */}
-                            <div className="fixed items-start justify-center hidden w-24 h-screen duration-300 bg-white opacity-80 hover:opacity-100 lg:flex">
-                                <div className="flex flex-col items-center justify-center w-8/12 py-3 space-y-5 text-sm text-gray-600 bg-white border rounded-lg shadow-md mt-72">
+                            <div className="fixed items-start justify-center hidden w-24 h-screen lg:flex">
+                                <div className="flex flex-col items-center justify-center w-8/12 py-3 space-y-5 text-sm text-gray-600 duration-300 bg-white border rounded-lg shadow-md opacity-80 hover:opacity-100 mt-72">
                                     {/* likes comments views */}
                                     <div className="flex flex-col items-center justify-center space-y-2">
                                         <div className="flex flex-col items-center justify-center p-1">
@@ -173,7 +173,7 @@ export default function Post() {
                                 </div>
                             </div>
                             {/* main content */}
-                            <div className="ml-0 mr-0 lg:ml-[96px] lg:mr-[96px]  bg-white w-full flex flex-col ">
+                            <div className="ml-0 mr-0 lg:ml-[96px] lg:mr-[96px]  bg-white w-full flex flex-col border-l border-r shadow-lg">
                                 <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:pr-0 md:py-4 lg:py-6 lg:pl-0">
                                     {/* avatar and image views */}
                                     <div className="flex items-center justify-center space-x-3 ">
@@ -218,7 +218,7 @@ export default function Post() {
                                         </div>
                                         {documents && documents?.images.sort().map((image, index) => (
                                             <div key={index} className="flex justify-center">
-                                                <img src={image} alt="main content" className={`max-h-[360px] sm:max-h-[480px] lg:max-h-[600px] border ${index == sliderValue ? 'inline-block' : 'hidden'} pointer-events-none`} />
+                                                <img src={image} alt="main content" className={`max-h-[360px] sm:max-h-[680px] md:px-10  ${index == sliderValue ? 'inline-block' : 'hidden'} pointer-events-none`} />
                                             </div>
                                         ))}
 
@@ -285,7 +285,7 @@ export default function Post() {
                         </div>
                     </div>
                     {/* right content */}
-                    <div className="hidden bg-[#efeeee] sm:col-span-2 lg:col-span-1 sm:inline-block">
+                    <div className="hidden sm:col-span-2 lg:col-span-1 sm:inline-block">
                         {/* <div className="flex items-center justify-center invisible mx-6 my-10 bg-orange-300 h-80">
                             <div className="text-2xl text-center text-white">Ads banner</div>
                         </div> */}
