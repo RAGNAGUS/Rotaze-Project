@@ -18,7 +18,7 @@
     @apply flex items-center h-12 p-2 pl-4 py-7 sm:py-0 text-gray-800 bg-red-100 border-2 border-red-500 rounded-md;
   }
   .fps-edit-btn {
-    @apply border px-5 py-1 w-14 sm:w-16 rounded-md justify-center text-center cursor-pointer;
+    @apply border font-bold px-2 py-1 w-14 sm:w-16 rounded-md justify-center text-center cursor-pointer bg-white text-gray-800;
   }
 }
 

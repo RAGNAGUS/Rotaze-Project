@@ -17,7 +17,6 @@ import { HeartIcon } from "@heroicons/react/outline";
 import { ChatAlt2Icon } from "@heroicons/react/outline";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { MdOutline360 } from 'react-icons/md'
 
 export default function Post() {
 

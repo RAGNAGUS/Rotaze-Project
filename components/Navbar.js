@@ -24,9 +24,11 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-[73px] gap-x-2 md:gap-x-6">
 
                     {/* logo text */}
-                    <a className="hidden px-2 py-1 duration-100 ease-in-out border-2 border-gray-500 rounded hover:border-gray-600 lg:inline-block" href="#">
-                        <span className='text-2xl font-semibold text-gray-600'>ROTAZE</span>
-                    </a>
+                    <Link href="/">
+                        <a className="hidden px-2 py-1 duration-100 ease-in-out border-2 border-gray-500 rounded hover:border-gray-600 lg:inline-block">
+                            <span className='text-2xl font-semibold text-gray-600'>ROTAZE</span>
+                        </a>
+                    </Link>
 
                     {/* Nav Links */}
                     <ul className="hidden text-gray-700 md:flex md:gap-x-4 md:items-center">

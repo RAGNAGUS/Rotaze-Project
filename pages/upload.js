@@ -199,11 +199,11 @@ export default function Upload() {
                                 className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded focus:outline-none"
                             >Edit Preview</button>
                         )}
-                        {isConditionIsMultipleImage && (
+                        {isConditionIsMultipleImage && !isPreview && (
                             <button
                                 onClick={() => setIsPreview(!isPreview)}
                                 className="w-1/3 text-white bg-gradient-to-r from-[#3d3f41] to-[#414345] rounded focus:outline-none"
-                            >{isPreview ? 'Hide Preview' : 'Preview'}</button>
+                            >Preview</button>
                         )}
                         <button
                             onClick={fileTypeCheck}
@@ -217,7 +217,7 @@ export default function Upload() {
                 )}
             </div>
             <div className={`${isPreview ? '' : 'hidden'}`}>
-                <PreviewDialog dragable={dragable} setDragable={setDragable} imgList={imgList} />
+                <PreviewDialog setIsPreview={setIsPreview} isPreview={isPreview} dragable={dragable} setDragable={setDragable} imgList={imgList} />
             </div>
 
             {/* single image condition */}
@@ -313,6 +313,10 @@ export default function Upload() {
                             <input id="dropzone-file" type="file" multiple accept=".png, .jpg, .jpeg" onChange={e => handleAddImage(e)} className="hidden" />
                         </label>
                     </div>
+                    <div className='w-full text-center text-gray-500'>
+                        <span>Tips: You can click the image to delete it</span>
+                    </div>
+                    {/* Terms and Privacy Policy */}
                     <div className='w-full text-center text-gray-500'>
                         <span className='text-[12px] '>By creating a post, you agree to Rotaze&#39;s <a className=''>Terms of Service</a> and <a>Privacy Policy</a></span>
                     </div>
