@@ -250,35 +250,34 @@ export default function Post() {
                                 <div>comments section</div>
 
                                 {/* hidden behavior bar for large screen */}
-                                <div className="flex justify-center w-full h-14 lg:hidden">
-                                    <div className="fixed flex p-1 text-gray-600 border-4 border-gray-400 bg-white/95 w-10/12text-sm bottom-5 justify-evenly rounded-xl">
-                                        {/* likes comments views */}
-                                        <div className="flex items-center px-3 space-x-6 border-gray-400 justify-evenly">
-                                            <div className="flex items-center justify-center space-x-6">
-                                                <div className="flex flex-col items-center justify-center">
-                                                    <HeartIcon className="w-6 h-6" />
-                                                    <div>{documents && documents.likes}</div>
-                                                </div>
-                                                <div className="flex flex-col items-center justify-center">
-                                                    <ChatAlt2Icon className="w-6 h-6" />
-                                                    <div>{documents && documents.comments}</div>
-                                                </div>
-                                                <div className="flex flex-col items-center justify-center">
-                                                    <EyeIcon className="w-6 h-6" />
-                                                    <div>{documents && documents.views}</div>
-                                                </div>
-                                            </div>
-                                            {/* share */}
-                                            <div className="flex flex-col items-center justify-center">
-                                                <ShareIcon className="w-5 h-5" />
-                                                <div>Share</div>
-                                            </div>
-                                            {/* report */}
-                                            <div className="flex flex-col items-center justify-center">
-                                                <ExclamationCircleIcon className="w-5 h-5" />
-                                                <div>Report</div>
-                                            </div>
+                                <div className="flex justify-center w-screen lg:hidden">
+                                    <div className="fixed bottom-0 flex w-full p-2 text-sm text-white bg-gray-700 justify-evenly">
+                                        {/* likes */}
+                                        <div className="flex flex-col items-center justify-center">
+                                            <HeartIcon className="w-6 h-6" />
+                                            <div>{documents && documents.likes}</div>
                                         </div>
+                                        {/* comments */}
+                                        <div className="flex flex-col items-center justify-center">
+                                            <ChatAlt2Icon className="w-6 h-6" />
+                                            <div>{documents && documents.comments}</div>
+                                        </div>
+                                        {/* views */}
+                                        <div className="flex flex-col items-center justify-center">
+                                            <EyeIcon className="w-6 h-6" />
+                                            <div>{documents && documents.views}</div>
+                                        </div>
+                                        {/* share */}
+                                        <div className="flex flex-col items-center justify-center">
+                                            <ShareIcon className="w-5 h-5" />
+                                            <div>Share</div>
+                                        </div>
+                                        {/* report */}
+                                        <div className="flex flex-col items-center justify-center">
+                                            <ExclamationCircleIcon className="w-5 h-5" />
+                                            <div>Report</div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
