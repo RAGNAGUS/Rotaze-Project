@@ -191,7 +191,7 @@ export default function Post() {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className="flex items-center justify-center w-16 h-8 ml-auto text-gray-600 border border-gray-400 rounded sm:w-20 sm:h-8">
+                                    <button className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8">
                                         <div>Next</div>
                                         <ChevronRightIcon className="w-4 h-4" />
                                     </button>
