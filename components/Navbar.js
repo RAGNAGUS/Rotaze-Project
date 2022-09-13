@@ -1,12 +1,16 @@
 import Link from 'next/link'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
 // imports icons
 import { MdNotificationsNone } from 'react-icons/md'
 import { TbMessageCircle } from 'react-icons/tb'
 import { useSignout } from '../hooks/useSignout'
+
+// firebase
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../firebase/config'
 
 // use for profile dropdown
 function classNames(...classes) {
@@ -18,6 +22,24 @@ export default function Navbar() {
     const { user } = useAuthContext()
     const { signout } = useSignout()
 
+    const [userDoc, setUserDoc] = useState("")
+
+    useEffect(() => {
+
+        const getDocuments = async () => {
+            if (user) {
+                const docRef = doc(db, "users", user.uid)
+                const docSnap = await getDoc(docRef)
+                if (docSnap.exists()) {
+                    setUserDoc(docSnap.data())
+                }
+            }
+        }
+        getDocuments()
+        return () => {
+
+        }
+    }, [user])
     return (
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
             <div className="px-4 mx-auto max-w-7xl">
@@ -66,10 +88,11 @@ export default function Navbar() {
                                 <div className='flex items-center justify-center'>
                                     <Menu.Button className="object-cover w-10 h-10 overflow-hidden rounded-full lg:inline-block">
                                         <img
-                                            src="https://picsum.photos/300"
+                                            src={user.photoURL}
                                             alt=""
-
+                                            className='w-full h-full'
                                         />
+
                                     </Menu.Button>
                                 </div>
                                 <Transition

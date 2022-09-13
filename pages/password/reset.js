@@ -2,14 +2,23 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
+// firebase
+import { auth } from "../../firebase/config";
+import { sendPasswordResetEmail } from 'firebase/auth';
+
 // import icons
 import { TbArrowBack } from 'react-icons/tb'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function ResetPassword() {
 
     const router = useRouter()
     const { user } = useAuthContext()
+
+    const [email, setEmail] = useState("")
+    const [error, setError] = useState("")
+    const [errorFormat, setErrorFormat] = useState(null)
+    const [success, setSuccess] = useState(null)
 
     // redirect to home page if user already logged in
     useEffect(() => {
@@ -17,6 +26,32 @@ export default function ResetPassword() {
             router.push('/')
         }
     }, [router, user])
+
+    const resetPassword = (e) => {
+        e.preventDefault()
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                setErrorFormat(null)
+                setSuccess("Please check your email.")
+                setTimeout(() => {
+                    router.push('/login')
+                }, 3000);
+            })
+            .catch((error) => {
+
+                setError(error.message)
+            })
+    }
+    // error check
+    useEffect(() => {
+        if (error === 'Firebase: Error (auth/invalid-email).') {
+            console.log("error")
+            setErrorFormat('Account not found.')
+        }
+        return () => {
+            setErrorFormat(null)
+        }
+    }, [error])
 
     return (
         <div className='fixed z-30 w-screen h-screen bg-[#ffffff]'>
@@ -38,14 +73,31 @@ export default function ResetPassword() {
                         <p>Enter your email and we&#39;ll send you a link to reset your password.</p>
                     </div>
                     <div className="px-5 py-1 bg-white">
-                        <form className="space-y-3">
+                        <form className="space-y-3" onSubmit={e => resetPassword(e)}>
                             <label className="flex flex-col">
                                 <input
                                     type="text"
                                     placeholder="Email"
+                                    onChange={e => setEmail(e.target.value)}
+                                    value={email}
                                     required
                                     className="input-form" />
                             </label>
+                            {errorFormat && (
+                                <div>
+                                    <label className='error-form '>
+                                        {errorFormat}
+                                    </label>
+                                </div>
+                            )}
+                            {success && (
+                                <div>
+                                    <label className='success-form '>
+                                        {success}
+                                    </label>
+                                </div>
+                            )}
+
                             <div className="flex items-center justify-end w-full pt-2 space-x-3">
                                 <button className="w-full h-10 text-white bg-gray-600 border rounded-md shadow-sm">
                                     <span>Reset your password</span>

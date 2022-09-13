@@ -175,12 +175,12 @@ export default function Post() {
                             <div className="ml-0 mr-0 lg:ml-[96px] lg:mr-[96px]  bg-white w-full flex flex-col border-l border-r shadow-lg">
                                 <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:pr-0 md:py-4 lg:py-6 lg:pl-0">
                                     {/* avatar and image views */}
-                                    <div className="flex items-center justify-center space-x-3 ">
+                                    <div className="flex items-center justify-center ml-0 space-x-3 lg:ml-10">
                                         <div className="w-8 sm:w-10">
                                             <img src={createrDocs && createrDocs.profileImage} alt="" className="duration-300 rounded-full cursor-pointer hover:scale-110" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold cursor-pointer hover:font-bold">{createrDocs && createrDocs.displayName}</div>
+                                            <div className="font-semibold cursor-pointer">{createrDocs && createrDocs.displayName}</div>
                                             <div className="flex space-x-1 text-[13px] sm:text-sm ">
                                                 <div className="flex space-x-1">
                                                     <div>{documents && documents.views}</div>
@@ -237,7 +237,7 @@ export default function Post() {
                                     </div>
                                 )}
                                 {/* title and descriptions */}
-                                <div className="flex flex-col items-start justify-center py-6 pl-6 pr-10 text-gray-800">
+                                <div className="flex flex-col items-start justify-center py-6 pr-10 ml-5 text-gray-800 sm:ml-10">
                                     <div className="w-full text-xl sm:text-2xl md:text-3xl">{documents && documents.title}</div>
                                     <div className="w-full text-[8px] md:text-[12px]  pb-2">{documents && format(documents?.createdAt.toDate(), 'dd MMMM yyyy')}</div>
                                     <div className="flex-wrap w-full text-base indent-4 overflow-clip h-36">{documents && documents.description}</div>

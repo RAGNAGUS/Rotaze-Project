@@ -4,7 +4,7 @@ import { useAuthContext } from "./useAuthContext"
 // firebase
 import { auth, db } from '../firebase/config'
 import { doc, setDoc, serverTimestamp, getDoc, updateDoc } from "firebase/firestore"
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 
 export const useSignup = () => {
 
@@ -22,8 +22,14 @@ export const useSignup = () => {
             if (!res) {
                 throw new Error('Could not complete signup')
             }
-            // create a user document after sign up
-            setDocAfterSignup(res.user, displayName)
+            // update default profile image to user who register with email
+            updateProfile(auth.currentUser, {
+                photoURL: "https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/defaultProfileURL%2Fblank-profile-picture-973460_1280-1.png?alt=media&token=da319322-c100-49fe-842d-0bb4ebe53e33"
+            }).then(() => {
+                // create a user document after sign up
+                setDocAfterSignup(res.user, displayName)
+            })
+
             // dispatch login action
             dispatch({ type: 'LOGIN', payload: res.user })
             setError(null)
@@ -70,7 +76,7 @@ export const useSignup = () => {
                 id: user.uid,
                 displayName,
                 email: user.email,
-                profileImage: 'null',
+                profileImage: user.photoURL,
                 about: '',
                 postLiked: [],
                 postReported: [],
