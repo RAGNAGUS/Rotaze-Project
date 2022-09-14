@@ -226,6 +226,7 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
                     views: 0,
                     likes: 0,
                     comments: 0,
+                    allComment: [],
                     createdAt: serverTimestamp()
                 })
                 setIsEverythingFinish(true)

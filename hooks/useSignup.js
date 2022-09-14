@@ -24,6 +24,7 @@ export const useSignup = () => {
             }
             // update default profile image to user who register with email
             updateProfile(auth.currentUser, {
+                displayName,
                 photoURL: "https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/defaultProfileURL%2Fblank-profile-picture-973460_1280-1.png?alt=media&token=da319322-c100-49fe-842d-0bb4ebe53e33"
             }).then(() => {
                 // create a user document after sign up

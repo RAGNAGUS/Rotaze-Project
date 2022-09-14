@@ -26,6 +26,7 @@ export default function Signup() {
     const [displayName, setDisplayName] = useState('')
 
     const handleSubmit = (e) => {
+        console.log("sign up with" + email + password + displayName);
         e.preventDefault()
         setpasswordError(null)
         setErrorFormat(null)

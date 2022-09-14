@@ -2,10 +2,11 @@
 import { useRouter } from "next/router"
 import { Fragment, useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { uuidv4 } from '@firebase/util'
 
 // firebase
 import { db } from '../../firebase/config'
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 
 // date fns
 import { format, formatDistanceToNow } from 'date-fns'
@@ -17,6 +18,7 @@ import { HeartIcon } from "@heroicons/react/outline";
 import { ChatAlt2Icon } from "@heroicons/react/outline";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
+import { async } from "@firebase/util";
 
 export default function Post() {
 
@@ -33,6 +35,8 @@ export default function Post() {
 
     const [documents, setDocuments] = useState()
     const [createrDocs, setCreaterDocs] = useState()
+
+    const [newComment, setNewComment] = useState('')
 
     const [isUserLiked, setIsUserLiked] = useState(false)
 
@@ -52,6 +56,7 @@ export default function Post() {
         }
         getDocuments()
     }, [param, isUserLiked])
+
 
     // useEffect for getting creater document
     useEffect(() => {
@@ -125,6 +130,42 @@ export default function Post() {
         setShowThreeSixty(false)
     }
 
+    //submit comment
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        console.log(user);
+        const commentToAdd = {
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            content: newComment,
+            createdAt: new Date(),
+            id: uuidv4()
+        }
+        // update comment
+        if (documents) {
+            // get all document before update comment
+            const docRef = doc(db, 'posts', `${param}`);
+            const getDocuments = async () => {
+                try {
+                    setIsPending(true)
+                    const docSnap = await getDoc(docRef);
+                    setDocuments(docSnap.data())
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            getDocuments()
+
+            await updateDoc(docRef, {
+                allComment: [...documents.allComment, commentToAdd],
+                comments: documents.allComment.length
+            })
+
+            setNewComment('')
+        }
+    }
+
     return (
         <div className="pt-[73px]">
             {documents && (
@@ -138,7 +179,7 @@ export default function Post() {
                         </div>
                     </div>
                     {/* center content */}
-                    <div className="col-span-1 sm:col-span-4 lg:col-span-3">
+                    <div className="max-w-5xl col-span-1 sm:col-span-4 lg:col-span-3">
                         <div className="flex">
                             {/* behavior bar */}
                             <div className="fixed items-start justify-center hidden w-24 h-screen lg:flex">
@@ -225,7 +266,7 @@ export default function Post() {
                                 </div>
                                 {/* Tags */}
                                 {documents.tags.length > 0 && (
-                                    <div className="w-full py-3 pl-4 lg:pl-0">
+                                    <div className="w-full py-3 pl-4 lg:pl-10">
                                         <div className="flex gap-1">
                                             {documents && documents.tags.map((tag, index) => (
                                                 <div key={index} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
@@ -240,13 +281,49 @@ export default function Post() {
                                 <div className="flex flex-col items-start justify-center py-6 pr-10 ml-5 text-gray-800 sm:ml-10">
                                     <div className="w-full text-xl sm:text-2xl md:text-3xl">{documents && documents.title}</div>
                                     <div className="w-full text-[8px] md:text-[12px]  pb-2">{documents && format(documents?.createdAt.toDate(), 'dd MMMM yyyy')}</div>
-                                    <div className="flex-wrap w-full text-base indent-4 overflow-clip h-36">{documents && documents.description}</div>
+                                    <div className="flex-wrap w-full text-base overflow-clip">{documents && documents.description}</div>
                                 </div>
-                                {/* ads banner bottom */}
-                                <div className="flex items-center justify-center invisible w-full bg-orange-300 border h-36">
-                                    <div className="text-3xl text-center text-white">Ads banner</div>
+                                {/* comments */}
+                                <div className="pl-10">
+                                    <h4>Comments</h4>
+                                    <div>
+                                        {documents.allComment.length > 0 && documents.allComment.map(comment => (
+                                            <div key={comment.id} className="py-2">
+                                                <div className="p-2 mr-10 bg-gray-100 rounded">
+                                                    <div className="flex items-center">
+                                                        <img
+                                                            src={comment.photoURL}
+                                                            className="mr-3 rounded-full w-9"
+                                                            alt="" />
+
+
+                                                        <p>{comment.displayName}</p>
+                                                        <p>{comment.createdAt.toDate().toString()}</p>
+
+
+                                                    </div>
+
+                                                    <div className="w-full p-1 px-2 mt-3 rounded bg-gray-50">
+                                                        <p>{comment.content}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <form onSubmit={handleSubmit}>
+                                        <label className="flex flex-col">
+                                            <span className="py-2">Add new comment:</span>
+                                            <textarea
+                                                className="h-16 pt-1 pl-2 pr-1 mr-10 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-28 focus:border-gray-600"
+                                                required
+                                                placeholder="Type your comment here"
+                                                onChange={(e) => setNewComment(e.target.value)}
+                                                value={newComment}
+                                            ></textarea>
+                                        </label>
+                                        <button className="w-64 h-12 mt-2 mb-24 border-2 border-gray-400 rounded shadow hover:bg-gray-800 hover:text-white">Add Comment</button>
+                                    </form>
                                 </div>
-                                <div>comments section</div>
 
                                 {/* hidden behavior bar for large screen */}
                                 <div className="flex justify-center w-screen lg:hidden">
@@ -282,35 +359,7 @@ export default function Post() {
                             </div>
                         </div>
                     </div>
-                    {/* right content */}
-                    <div className="hidden sm:col-span-2 lg:col-span-1 sm:inline-block">
-                        {/* <div className="flex items-center justify-center invisible mx-6 my-10 bg-orange-300 h-80">
-                            <div className="text-2xl text-center text-white">Ads banner</div>
-                        </div> */}
-                        <div className="p-3 mx-6 bg-white rounded h-fit">
-                            <div className="pb-2 text-gray-600 border-b text-md">most popular in this week</div>
-                            <div className="px-2 py-2 space-y-3">
-                                {/* map for most poppular */}
-                                <div className="flex items-center justify-start w-full overflow-hidden duration-100 ease-out border border-gray-400 rounded-lg shadow-md hover:scale-105">
-                                    <div className="w-16 lg:w-20 "><img src="https://picsum.photos/300" alt="" /></div>
-                                    <div className="pl-5">title</div>
-                                </div>
-                                <div className="flex items-center justify-start w-full overflow-hidden duration-100 ease-out border border-gray-400 rounded-lg shadow-md hover:scale-105">
-                                    <div className="w-16 lg:w-20 "><img src="https://picsum.photos/500" alt="" /></div>
-                                    <div className="pl-5">title</div>
-                                </div>
-                                <div className="flex items-center justify-start w-full overflow-hidden duration-100 ease-out border border-gray-400 rounded-lg shadow-md hover:scale-105">
-                                    <div className="w-16 lg:w-20 "><img src="https://picsum.photos/600" alt="" /></div>
-                                    <div className="pl-5">title</div>
-                                </div>
-                                <div className="flex items-center justify-start w-full overflow-hidden duration-100 ease-out border border-gray-400 rounded-lg shadow-md hover:scale-105">
-                                    <div className="w-16 lg:w-20 "><img src="https://picsum.photos/100" alt="" /></div>
-                                    <div className="pl-5">title</div>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>
                 </div>
             )
             }
