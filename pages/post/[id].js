@@ -310,19 +310,21 @@ export default function Post() {
                                             </div>
                                         ))}
                                     </div>
-                                    <form onSubmit={handleSubmit}>
-                                        <label className="flex flex-col">
-                                            <span className="py-2">Add new comment:</span>
-                                            <textarea
-                                                className="h-16 pt-1 pl-2 pr-1 mr-10 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-28 focus:border-gray-600"
-                                                required
-                                                placeholder="Type your comment here"
-                                                onChange={(e) => setNewComment(e.target.value)}
-                                                value={newComment}
-                                            ></textarea>
-                                        </label>
-                                        <button className="w-64 h-12 mt-2 mb-24 border-2 border-gray-400 rounded shadow hover:bg-gray-800 hover:text-white">Add Comment</button>
-                                    </form>
+                                    {user && (
+                                        <form onSubmit={handleSubmit}>
+                                            <label className="flex flex-col">
+                                                <span className="py-2">Add new comment:</span>
+                                                <textarea
+                                                    className="h-16 pt-1 pl-2 pr-1 mr-10 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-28 focus:border-gray-600"
+                                                    required
+                                                    placeholder="Type your comment here"
+                                                    onChange={(e) => setNewComment(e.target.value)}
+                                                    value={newComment}
+                                                ></textarea>
+                                            </label>
+                                            <button className="w-64 h-12 mt-2 mb-24 border-2 border-gray-400 rounded shadow hover:bg-gray-800 hover:text-white">Add Comment</button>
+                                        </form>
+                                    )}
                                 </div>
 
                                 {/* hidden behavior bar for large screen */}
