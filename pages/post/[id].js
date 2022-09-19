@@ -29,16 +29,22 @@ export default function Post() {
 
     const [error, setError] = useState(null)
     const [isPending, setIsPending] = useState(false)
+    const [isUpdatingLike, setIsUpdatingLike] = useState(false)
+    const [isUpdatingReport, setIsUpdatingReport] = useState(false)
 
     const [sliderValue, setSliderValue] = useState(0)
     const [showThreeSixty, setShowThreeSixty] = useState(false)
 
     const [documents, setDocuments] = useState()
     const [createrDocs, setCreaterDocs] = useState()
+    const [userDocs, setUserDocs] = useState()
 
     const [newComment, setNewComment] = useState('')
 
-    const [isUserLiked, setIsUserLiked] = useState(false)
+    const [isUserLiked, setIsUserLiked] = useState()
+    const [isUserReported, setIsUserReported] = useState()
+
+    const [canUpdateView, setCanUpdateView] = useState(true)
 
     // useEffect for getting document
     useEffect(() => {
@@ -49,13 +55,17 @@ export default function Post() {
                 setIsPending(true)
                 const docSnap = await getDoc(docRef);
                 setDocuments(docSnap.data())
+                await updateDoc(docRef, {
+                    comments: documents.allComment.length
+                })
                 setIsPending(false)
             } catch (error) {
                 setError(error)
             }
         }
+
         getDocuments()
-    }, [param, isUserLiked])
+    }, [param])
 
 
     // useEffect for getting creater document
@@ -77,24 +87,41 @@ export default function Post() {
         }
     }, [documents])
 
-    // useEffect for update liked status
+    // useEffect for getting user document
     useEffect(() => {
-
-    }, [])
+        // create user reference
+        if (user && documents) {
+            const userRef = doc(db, 'users', `${user.uid}`);
+            const getUserDocs = async () => {
+                try {
+                    setIsPending(true)
+                    const docSnap = await getDoc(userRef);
+                    setUserDocs(docSnap.data())
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            getUserDocs()
+        }
+    }, [documents, param, user])
 
     // useEffect for update views
     useEffect(() => {
         // create document reference
         if (documents) {
             const docRef = doc(db, 'posts', `${param}`);
-            const updateView = async () => {
-                await updateDoc(docRef, {
-                    views: documents.views + 1
-                })
+            if (canUpdateView) {
+                const updateView = async () => {
+                    await updateDoc(docRef, {
+                        views: documents.views + 1
+                    })
+                }
+                updateView()
+                setCanUpdateView(false)
             }
-            updateView()
         }
-    }, [documents, param])
+    }, [canUpdateView, documents, param])
 
     //useEffect for show logo
     useEffect(() => {
@@ -106,19 +133,146 @@ export default function Post() {
 
     }, [documents])
 
+    // is user liked and reportd check before render
+    useEffect(() => {
+        if (userDocs && user) {
+            if (userDocs.postLiked?.includes(param)) {
+                setIsUserLiked(true)
+            } else {
+                setIsUserLiked(false)
+            }
+
+            if (userDocs.postReported?.includes(param)) {
+                setIsUserReported(true)
+            } else {
+                setIsUserReported(false)
+            }
+        }
+    }, [param, userDocs])
+
 
     // handleClick like button
     const handleClickLike = async () => {
+        setIsUpdatingLike(true)
+        // update like
+        if (documents) {
+            // get all document before update like
+            const docRef = doc(db, 'posts', `${param}`);
+            const getDocuments = async () => {
+                try {
+                    setIsPending(true)
+                    const docSnap = await getDoc(docRef);
+                    setDocuments(docSnap.data())
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            getDocuments()
 
+            if (user) {
+                if (userDocs.postLiked.includes(param)) {
+                    // remove liked post in user document
+                    const index = userDocs.postLiked.indexOf(param);
+                    if (index > -1) {
+                        setUserDocs(userDocs.postLiked.splice(index, 1))
+                    }
+                    console.log(userDocs.postLiked)
+                    // update user liked post
+                    const userDocRef = doc(db, 'users', `${user.uid}`);
+                    await updateDoc(userDocRef, {
+                        postLiked: userDocs.postLiked
+                    })
+                    // update likes
+                    await updateDoc(docRef, {
+                        likes: documents.likes - 1
+                    })
+                    getDocuments()
+                    setIsUserLiked(false)
+
+                } else {
+                    // update likes
+                    await updateDoc(docRef, {
+                        likes: documents.likes + 1
+                    })
+                    // update user liked post
+                    const userDocRef = doc(db, 'users', `${user.uid}`);
+                    await updateDoc(userDocRef, {
+                        postLiked: [...userDocs.postLiked, param],
+                    })
+                    getDocuments()
+                    setIsUserLiked(true)
+                }
+            } else {
+                router.push('/login')
+            }
+
+            setIsUpdatingLike(false)
+        }
 
     }
     // handleClick comment button
     const handleClickComment = () => {
-        return
+        window.scrollTo(0, document.body.scrollHeight);
     }
     // handleClick report button
-    const handleClickReport = () => {
-        return
+    const handleClickReport = async () => {
+        setIsUpdatingReport(true)
+        // update like
+        if (documents) {
+            // get all document before update like
+            const docRef = doc(db, 'posts', `${param}`);
+            const getDocuments = async () => {
+                try {
+                    setIsPending(true)
+                    const docSnap = await getDoc(docRef);
+                    setDocuments(docSnap.data())
+                    setIsPending(false)
+                } catch (error) {
+                    setError(error)
+                }
+            }
+            getDocuments()
+
+            if (user) {
+                if (userDocs.postReported.includes(param)) {
+                    // remove reported post in user document
+                    const index = userDocs.postReported.indexOf(param);
+                    if (index > -1) {
+                        setUserDocs(userDocs.postReported.splice(index, 1))
+                    }
+                    console.log(userDocs.postReported)
+                    // update user liked post
+                    const userDocRef = doc(db, 'users', `${user.uid}`);
+                    await updateDoc(userDocRef, {
+                        postReported: userDocs.postReported
+                    })
+                    // update reported
+                    await updateDoc(docRef, {
+                        reported: documents.reported - 1
+                    })
+                    getDocuments()
+                    setIsUserReported(false)
+
+                } else {
+                    // update reported
+                    await updateDoc(docRef, {
+                        reported: documents.reported + 1
+                    })
+                    // update user reported post
+                    const userDocRef = doc(db, 'users', `${user.uid}`);
+                    await updateDoc(userDocRef, {
+                        postReported: [...userDocs.postReported, param],
+                    })
+                    getDocuments()
+                    setIsUserReported(true)
+                }
+            } else {
+                router.push("/login")
+            }
+
+            setIsUpdatingReport(false)
+        }
     }
     // handleClick share button
     const handleClickShare = () => {
@@ -133,11 +287,11 @@ export default function Post() {
     //submit comment
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(user);
         const commentToAdd = {
             displayName: user.displayName,
             photoURL: user.photoURL,
             content: newComment,
+            commentBy: user.uid,
             createdAt: new Date(),
             id: uuidv4()
         }
@@ -156,14 +310,23 @@ export default function Post() {
                 }
             }
             getDocuments()
-
             await updateDoc(docRef, {
                 allComment: [...documents.allComment, commentToAdd],
                 comments: documents.allComment.length
             })
-
             setNewComment('')
+            window.scrollTo(0, document.body.scrollHeight);
         }
+    }
+
+    // push user to creator profile
+    const pushToProfile = () => {
+        router.push(`/profile/${documents.createdBy}`)
+    }
+
+    // push user to commentor profile
+    const pushToCommentorProfile = (uid) => {
+        router.push(`/profile/${uid}`)
     }
 
     return (
@@ -179,19 +342,27 @@ export default function Post() {
                         </div>
                     </div>
                     {/* center content */}
-                    <div className="max-w-5xl col-span-1 sm:col-span-4 lg:col-span-3">
+                    <div className="max-w-5xl col-span-1 mx-auto sm:col-span-4 lg:col-span-3">
                         <div className="flex">
                             {/* behavior bar */}
                             <div className="fixed items-start justify-center hidden w-24 h-screen lg:flex">
                                 <div className="flex flex-col items-center justify-center w-8/12 py-3 space-y-5 text-sm text-gray-600 duration-300 bg-white border rounded-lg shadow-md opacity-80 hover:opacity-100 mt-72">
                                     {/* likes comments views */}
                                     <div className="flex flex-col items-center justify-center space-y-2">
+                                        {isUpdatingLike && (
+                                            <div className="flex flex-col items-center justify-center p-1">
+                                                <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : 'white'}`} className='w-6 h-6 duration-300 ease-out' />
+                                                <div>{documents && documents.likes}</div>
+                                            </div>
+                                        )}
+                                        {!isUpdatingLike && (
+                                            <div className="flex flex-col items-center justify-center p-1">
+                                                <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : 'white'}`} className='w-6 h-6 duration-300 ease-out cursor-pointer' />
+                                                <div>{documents && documents.likes}</div>
+                                            </div>
+                                        )}
                                         <div className="flex flex-col items-center justify-center p-1">
-                                            <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : 'white'}`} className='w-6 h-6 duration-300 ease-out cursor-pointer hover:scale-125' />
-                                            <div>{documents && documents.likes}</div>
-                                        </div>
-                                        <div className="flex flex-col items-center justify-center p-1">
-                                            <ChatAlt2Icon className="w-6 h-6 duration-300 ease-out hover:scale-125" />
+                                            <ChatAlt2Icon onClick={handleClickComment} className="w-6 h-6 transition-all duration-300 ease-out hover:scale-125" />
                                             <div>{documents && documents.comments}</div>
                                         </div>
                                         <div className="flex flex-col items-center justify-center p-1">
@@ -206,8 +377,8 @@ export default function Post() {
                                     </div>
                                     {/* report */}
                                     <div className="flex flex-col items-center justify-center">
-                                        <ExclamationCircleIcon className="w-5 h-5 duration-300 ease-out hover:scale-125" />
-                                        <div>Report</div>
+                                        <ExclamationCircleIcon onClick={handleClickReport} className={`${isUserReported ? 'fill-yellow-200' : ''} w-6 h-6 duration-300 ease-out hover:scale-125`} />
+                                        <div className="text-[12px] font-bold">{isUserReported ? 'Reported' : 'Report'}</div>
                                     </div>
 
                                 </div>
@@ -217,11 +388,11 @@ export default function Post() {
                                 <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:pr-0 md:py-4 lg:py-6 lg:pl-0">
                                     {/* avatar and image views */}
                                     <div className="flex items-center justify-center ml-0 space-x-3 lg:ml-10">
-                                        <div className="w-8 sm:w-10">
+                                        <div onClick={pushToProfile} className="w-8 sm:w-10">
                                             <img src={createrDocs && createrDocs.profileImage} alt="" className="duration-300 rounded-full cursor-pointer hover:scale-110" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold cursor-pointer">{createrDocs && createrDocs.displayName}</div>
+                                            <div onClick={pushToProfile} className="font-semibold cursor-pointer">{createrDocs && createrDocs.displayName}</div>
                                             <div className="flex space-x-1 text-[13px] sm:text-sm ">
                                                 <div className="flex space-x-1">
                                                     <div>{documents && documents.views}</div>
@@ -287,18 +458,21 @@ export default function Post() {
                                 <div className="pl-10">
                                     <h4>Comments</h4>
                                     <div>
-                                        {documents.allComment.length > 0 && documents.allComment.map(comment => (
+                                        {documents.allComment.length > 0 && documents.allComment.map((comment) => (
                                             <div key={comment.id} className="py-2">
                                                 <div className="p-2 mr-10 bg-gray-100 rounded">
                                                     <div className="flex items-center">
                                                         <img
                                                             src={comment.photoURL}
-                                                            className="mr-3 rounded-full w-9"
+                                                            onClick={() => pushToCommentorProfile(comment.commentBy)}
+                                                            className="mr-3 rounded-full cursor-pointer w-9"
                                                             alt="" />
 
 
-                                                        <p>{comment.displayName}</p>
-                                                        <p>{comment.createdAt.toDate().toString()}</p>
+                                                        <div className="flex flex-col">
+                                                            <p className="cursor-pointer " onClick={() => pushToCommentorProfile(comment.commentBy)}>{comment.displayName}</p>
+                                                            <div className="text-sm text-gray-500">{comment && formatDistanceToNow(comment?.createdAt.toDate(), { addSuffix: true })}</div>
+                                                        </div>
 
 
                                                     </div>
@@ -315,7 +489,7 @@ export default function Post() {
                                             <label className="flex flex-col">
                                                 <span className="py-2">Add new comment:</span>
                                                 <textarea
-                                                    className="h-16 pt-1 pl-2 pr-1 mr-10 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-28 focus:border-gray-600"
+                                                    className="pt-1 pl-2 pr-1 mr-10 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none h-28 focus:border-gray-600"
                                                     required
                                                     placeholder="Type your comment here"
                                                     onChange={(e) => setNewComment(e.target.value)}
@@ -331,13 +505,21 @@ export default function Post() {
                                 <div className="flex justify-center w-screen lg:hidden">
                                     <div className="fixed bottom-0 flex w-full p-2 text-sm text-white bg-gray-700 justify-evenly">
                                         {/* likes */}
-                                        <div className="flex flex-col items-center justify-center">
-                                            <HeartIcon className="w-6 h-6" />
-                                            <div>{documents && documents.likes}</div>
-                                        </div>
+                                        {isUserLiked && (
+                                            <div className="flex flex-col items-center justify-center">
+                                                <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : '#374151'}`} className='w-6 h-6 duration-300 ease-out ' />
+                                                <div>{documents && documents.likes}</div>
+                                            </div>
+                                        )}
+                                        {!isUserLiked && (
+                                            <div className="flex flex-col items-center justify-center">
+                                                <HeartIcon onClick={handleClickLike} fill={`${isUserLiked ? 'red' : '#374151'}`} className='w-6 h-6 ' />
+                                                <div>{documents && documents.likes}</div>
+                                            </div>
+                                        )}
                                         {/* comments */}
                                         <div className="flex flex-col items-center justify-center">
-                                            <ChatAlt2Icon className="w-6 h-6" />
+                                            <ChatAlt2Icon onClick={handleClickComment} className="w-6 h-6" />
                                             <div>{documents && documents.comments}</div>
                                         </div>
                                         {/* views */}
@@ -352,8 +534,8 @@ export default function Post() {
                                         </div>
                                         {/* report */}
                                         <div className="flex flex-col items-center justify-center">
-                                            <ExclamationCircleIcon className="w-5 h-5" />
-                                            <div>Report</div>
+                                            <ExclamationCircleIcon onClick={handleClickReport} className={`${isUserReported ? 'fill-yellow-200' : ''} w-5 h-5 duration-300 ease-out hover:scale-125`} />
+                                            <div>{isUserReported ? 'Reported' : 'Report'}</div>
                                         </div>
 
                                     </div>

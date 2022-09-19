@@ -2,11 +2,12 @@ import Link from 'next/link'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { Fragment, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { useSignout } from '../hooks/useSignout'
+import { useRouter } from 'next/router'
 
 // imports icons
 import { MdNotificationsNone } from 'react-icons/md'
 import { TbMessageCircle } from 'react-icons/tb'
-import { useSignout } from '../hooks/useSignout'
 
 // firebase
 import { doc, getDoc } from 'firebase/firestore'
@@ -21,6 +22,7 @@ export default function Navbar() {
 
     const { user } = useAuthContext()
     const { signout } = useSignout()
+    const router = useRouter()
 
     const [userDoc, setUserDoc] = useState("")
 
@@ -40,6 +42,15 @@ export default function Navbar() {
 
         }
     }, [user])
+
+    //go to own proflie
+    const pushToProfile = () => {
+        if (user) {
+            router.push(`/profile/${user.uid}`)
+        } else {
+            router.push(`/login`)
+        }
+    }
     return (
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
             <div className="px-4 mx-auto max-w-7xl">
@@ -54,10 +65,10 @@ export default function Navbar() {
 
                     {/* Nav Links */}
                     <ul className="hidden text-gray-700 md:flex md:gap-x-4 md:items-center">
-                        <li><Link href="/"><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white" href="#">Home</a></Link></li>
-                        <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white" href="#">Profile</a></li>
-                        <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white" href="#">Discover</a></li>
-                        <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded bg-gradient-to-r from-[#de6161]  to-[#2657eb] text-white" href="#">Premium</a></li>
+                        <li><Link href="/"><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Home</a></Link></li>
+                        <li><a onClick={pushToProfile} className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Profile</a></li>
+                        <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Discover</a></li>
+                        {/* <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded bg-gradient-to-r from-[#de6161]  to-[#2657eb] text-white" href="#">Premium</a></li> */}
                     </ul>
 
                     <button className="px-2 py-2 ml-10 mr-1 text-[12px] font-bold text-gray-600 border-2 border-gray-300 rounded sm:hidden">
@@ -108,7 +119,7 @@ export default function Navbar() {
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <a
-                                                    href="#"
+                                                    onClick={pushToProfile}
                                                     className={classNames(active ? 'bg-gray-600 text-gray-50 rounded-tl rounded-tr' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                 >
                                                     Your Profile

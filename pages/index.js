@@ -60,6 +60,7 @@ export default function Home() {
     }
   }
 
+
   return (
     <div className="pt-[75px] w-full min-h-screen">
       <div className="w-11/12 mx-auto ">
