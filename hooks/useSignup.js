@@ -80,6 +80,7 @@ export const useSignup = () => {
                 profileImage: user.photoURL,
                 about: 'Hi, welcome to my profile',
                 follows: 0,
+                followed: [],
                 postLiked: [],
                 postReported: [],
                 wallpaper: 'null',

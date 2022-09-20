@@ -45,6 +45,7 @@ export default function Post() {
     const [isUserReported, setIsUserReported] = useState()
 
     const [canUpdateView, setCanUpdateView] = useState(true)
+    const [isCopy, setIsCopy] = useState(false)
 
     // useEffect for getting document
     useEffect(() => {
@@ -276,7 +277,8 @@ export default function Post() {
     }
     // handleClick share button
     const handleClickShare = () => {
-        return
+        navigator.clipboard.writeText(window.location.href)
+        setIsCopy(true)
     }
 
     const onCardChange = (e) => {
@@ -371,8 +373,8 @@ export default function Post() {
                                         </div>
                                         {/* share */}
                                         <div className="flex flex-col items-center justify-center p-1">
-                                            <ShareIcon className="w-6 h-6 duration-300 ease-out hover:scale-125" />
-                                            <div>Share</div>
+                                            <ShareIcon onClick={handleClickShare} className="w-6 h-6 duration-300 ease-out cursor-pointer hover:scale-125" />
+                                            <div>{isCopy ? 'Copied' : 'Share'}</div>
                                         </div>
                                     </div>
                                     {/* report */}
@@ -388,8 +390,8 @@ export default function Post() {
                                 <div className="flex items-center justify-start w-full py-2 pl-5 pr-4 text-gray-800 border-gray-300 lg:pr-0 md:py-4 lg:py-6 lg:pl-0">
                                     {/* avatar and image views */}
                                     <div className="flex items-center justify-center ml-0 space-x-3 lg:ml-10">
-                                        <div onClick={pushToProfile} className="w-8 sm:w-10">
-                                            <img src={createrDocs && createrDocs.profileImage} alt="" className="duration-300 rounded-full cursor-pointer hover:scale-110" />
+                                        <div onClick={pushToProfile}>
+                                            <img src={createrDocs && createrDocs.profileImage} alt="" className="object-cover w-8 h-8 duration-300 rounded-full cursor-pointer sm:w-10 sm:h-10 hover:scale-110" />
                                         </div>
                                         <div>
                                             <div onClick={pushToProfile} className="font-semibold cursor-pointer">{createrDocs && createrDocs.displayName}</div>

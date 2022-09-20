@@ -18,12 +18,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
+
+
 export default function Navbar() {
 
     const { user } = useAuthContext()
     const { signout } = useSignout()
     const router = useRouter()
-
     const [userDoc, setUserDoc] = useState("")
 
     useEffect(() => {
@@ -51,6 +52,16 @@ export default function Navbar() {
             router.push(`/login`)
         }
     }
+
+    //go to own proflie
+    const pushToSettings = () => {
+        if (user) {
+            router.push(`/profile/settings`)
+        } else {
+            router.push(`/login`)
+        }
+    }
+
     return (
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
             <div className="px-4 mx-auto max-w-7xl">
@@ -88,12 +99,12 @@ export default function Navbar() {
                             <button className="ml-3 md:ml-0 hidden sm:inline-block py-1.5 px-5 rounded-full border border-gray-200 ">
                                 <Link href="/upload"><a>Upload</a></Link>
                             </button>
-                            <button className="ml-2 sm:ml-1 lg:inline-block">
+                            {/* <button className="ml-2 sm:ml-1 lg:inline-block">
                                 <TbMessageCircle className='w-7 h-7 invert-[40%] hover:invert-[30%]' />
                             </button>
                             <button className="lg:inline-block">
                                 <MdNotificationsNone className='w-7 h-7 invert-[40%] hover:invert-[30%]' />
-                            </button>
+                            </button> */}
                             {/* Profile dropdown */}
                             <Menu as="div" className="relative">
                                 <div className='flex items-center justify-center'>
@@ -101,7 +112,7 @@ export default function Navbar() {
                                         <img
                                             src={user.photoURL}
                                             alt=""
-                                            className='w-full h-full'
+                                            className='object-cover w-full h-full'
                                         />
 
                                     </Menu.Button>
@@ -129,7 +140,7 @@ export default function Navbar() {
                                         <Menu.Item>
                                             {({ active }) => (
                                                 <a
-                                                    href="#"
+                                                    onClick={pushToSettings}
                                                     className={classNames(active ? 'bg-gray-600 text-gray-50' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                 >
                                                     Settings

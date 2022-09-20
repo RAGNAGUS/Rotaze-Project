@@ -14,6 +14,9 @@
   .input-form {
     @apply w-full h-10 pl-3 text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-12 focus:border-gray-600;
   }
+  .input-form-about {
+    @apply w-full h-20 pl-3 pt-2  text-gray-800 duration-150 ease-in-out border-2 border-gray-300 rounded outline-none focus:h-28 focus:border-gray-600;
+  }
   .error-form {
     @apply flex items-center h-12 p-2 pl-4 py-7 sm:py-0 text-gray-800 bg-red-100 border-2 border-red-500 rounded-md;
   }
