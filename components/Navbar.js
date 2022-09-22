@@ -63,6 +63,24 @@ export default function Navbar() {
         }
     }
 
+    // search submit handle
+    const handleSearch = (e) => {
+        setSearch(e.target.value)
+        router.push(`/search/${search}`)
+    }
+
+    useEffect(() => {
+        if (search.length < 1) {
+            router.push(`/`)
+        }
+        if (search.length === 1) {
+            router.push(`/search/${search}`)
+        }
+        return () => {
+
+        }
+    }, [search])
+
 
 
     return (
@@ -90,13 +108,15 @@ export default function Navbar() {
                     </button>
 
                     {/* Search */}
+
                     <input
                         className="sm:ml-0 w-0 md:ml-0 flex-1 md:flex-1 py-1.5 px-4 text-gray-700 bg-gray-100 rounded-full border-[2px] border-gray-100 transition focus:outline-none focus:bg-white focus:border-gray-600"
                         type="text"
                         placeholder="Search"
-                        onChange={e => setSearch(e.target.value)}
+                        onChange={e => handleSearch(e)}
                         value={search}
                     />
+
 
                     {/* upload, notification and profile */}
                     {user && (
