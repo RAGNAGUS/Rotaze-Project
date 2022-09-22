@@ -81,29 +81,29 @@ export default function SideNavbar() {
                                 <div onClick={closeSideNavBar} className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">
                                     <CgProfile className="text-2xl text-gray-300 group-hover:text-white " />
                                     <h3 className="text-base font-semibold text-gray-300 group-hover:text-white ">
-                                        Profile
+                                        <Link href={`/profile/${user.uid}`}> Profile</Link>
                                     </h3>
                                 </div>
                             )}
-                            {user && (
+                            {/* {user && (
                                 <div onClick={closeSideNavBar} className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">
                                     <TbMessages className="text-2xl text-gray-300 group-hover:text-white " />
                                     <h3 className="text-base font-semibold text-gray-300 group-hover:text-white ">
                                         Messages
                                     </h3>
                                 </div>
-                            )}
+                            )} */}
                             <div onClick={closeSideNavBar} className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">
                                 <RiCompassDiscoverLine className="text-2xl text-gray-300 group-hover:text-white " />
                                 <h3 className="text-base font-semibold text-gray-300 group-hover:text-white ">
-                                    Discover
+                                    <Link href='/discover'> Discover</Link>
                                 </h3>
                             </div>
                             {user && (
                                 <div onClick={closeSideNavBar} className="flex items-center justify-start gap-4 p-2 pl-5 m-auto mb-2 rounded-md cursor-pointer hover:bg-gray-900 group hover:shadow-lg">
                                     <IoSettingsOutline className="text-2xl text-gray-300 group-hover:text-white " />
                                     <h3 className="text-base font-semibold text-gray-300 group-hover:text-white ">
-                                        Settings
+                                        <Link href='/profile/settings'>Settings</Link>
                                     </h3>
                                 </div>
                             )}

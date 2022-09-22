@@ -18,14 +18,15 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-
-
 export default function Navbar() {
 
     const { user } = useAuthContext()
     const { signout } = useSignout()
     const router = useRouter()
+    const param = router.query.id
     const [userDoc, setUserDoc] = useState("")
+
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
 
@@ -62,6 +63,8 @@ export default function Navbar() {
         }
     }
 
+
+
     return (
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
             <div className="px-4 mx-auto max-w-7xl">
@@ -77,8 +80,8 @@ export default function Navbar() {
                     {/* Nav Links */}
                     <ul className="hidden text-gray-700 md:flex md:gap-x-4 md:items-center">
                         <li><Link href="/"><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Home</a></Link></li>
-                        <li><a onClick={pushToProfile} className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Profile</a></li>
-                        <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded hover:bg-gray-600 hover:text-white">Discover</a></li>
+                        <li><a onClick={pushToProfile} className="px-3 py-2 font-medium duration-150 ease-in-out rounded cursor-pointer hover:bg-gray-600 hover:text-white">Profile</a></li>
+                        <li><Link href="/discover"><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded cursor-pointer hover:bg-gray-600 hover:text-white">Discover</a></Link></li>
                         {/* <li><a className="px-3 py-2 font-medium duration-150 ease-in-out rounded bg-gradient-to-r from-[#de6161]  to-[#2657eb] text-white" href="#">Premium</a></li> */}
                     </ul>
 
@@ -91,6 +94,8 @@ export default function Navbar() {
                         className="sm:ml-0 w-0 md:ml-0 flex-1 md:flex-1 py-1.5 px-4 text-gray-700 bg-gray-100 rounded-full border-[2px] border-gray-100 transition focus:outline-none focus:bg-white focus:border-gray-600"
                         type="text"
                         placeholder="Search"
+                        onChange={e => setSearch(e.target.value)}
+                        value={search}
                     />
 
                     {/* upload, notification and profile */}
