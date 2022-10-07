@@ -331,6 +331,11 @@ export default function Post() {
         router.push(`/profile/${uid}`)
     }
 
+    // push user to discover tag
+    const pushToDiscoverTags = (tag) => {
+        router.push(`/discover/${tag}`)
+    }
+
     return (
         <div className="pt-[73px]">
             {documents && (
@@ -405,10 +410,10 @@ export default function Post() {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8">
+                                    {/* <button className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8">
                                         <div>Next</div>
                                         <ChevronRightIcon className="w-4 h-4" />
-                                    </button>
+                                    </button> */}
                                 </div>
                                 {/* image content */}
                                 <div className="flex items-center justify-center w-full">
@@ -442,7 +447,7 @@ export default function Post() {
                                     <div className="w-full py-3 pl-4 lg:pl-10">
                                         <div className="flex gap-1">
                                             {documents && documents.tags.map((tag, index) => (
-                                                <div key={index} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
+                                                <div key={index} onClick={() => pushToDiscoverTags(tag)} className="cursor-pointer px-3 py-1 text-gray-600 bg-white rounded-full w-fit text-[10px] sm:text-[12px] font-bold border shadow-md">
                                                     #{tag}
                                                 </div>
                                             ))}

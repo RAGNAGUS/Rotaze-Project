@@ -82,31 +82,31 @@ export default function Home() {
         {/* image gallery */}
         <div className="columns-3xs">
           {/* show filter card */}
-          <div>
-            {documents && filterPostType != 3 && documents.filter(documents => documents.postType == filterPostType).map((doc, index) => (
-              <div
-                onClick={() => handleClick(doc.id)}
-                key={index}
-                className="relative my-3 [break-inside:avoid] cursor-pointer hover:scale-105 duration-300 ease-out hover:z-10">
 
-                {/* 360 logo */}
-                {doc.postType == 1 && (
-                  <div className="absolute flex items-center justify-center w-full h-full">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/360logo%2F360-logo.png?alt=media&token=a7317a86-d04d-424c-afe2-92c2ee18c1a9" alt="360 logo" className="w-[30%] opacity-80" />
-                  </div>
-                )}
+          {documents && filterPostType != 3 && documents.filter(documents => documents.postType == filterPostType).map((doc, index) => (
+            <div
+              onClick={() => handleClick(doc.id)}
+              key={index}
+              className="relative my-3 [break-inside:avoid] cursor-pointer hover:scale-105 duration-300 ease-out hover:z-10">
 
-                {/* image */}
-                <div>
-                  <img
-                    className="bg-white border border-gray-300 rounded-md shadow-sm"
-                    src={doc.thumbnail}
-                    alt="" />
-                  {/* details */}
+              {/* 360 logo */}
+              {doc.postType == 1 && (
+                <div className="absolute flex items-center justify-center w-full h-full">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/360logo%2F360-logo.png?alt=media&token=a7317a86-d04d-424c-afe2-92c2ee18c1a9" alt="360 logo" className="w-[30%] opacity-80" />
                 </div>
+              )}
+
+              {/* image */}
+              <div>
+                <img
+                  className="bg-white border border-gray-300 rounded-md shadow-sm"
+                  src={doc.thumbnail}
+                  alt="" />
+                {/* details */}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+
           {/* show all card */}
           <div>
             {documents && filterPostType == 3 && documents.map((doc, index) => (
