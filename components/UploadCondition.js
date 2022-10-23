@@ -75,21 +75,21 @@ export default function UploadCondition({
                                                 <ImImage className='w-20 h-20 invert-[20%]' />
                                                 <div>
                                                     <span className='text-xl font-semibold'>Single Image</span>
-                                                    <p className='text-sm'>blah blah blah</p>
+                                                    <p className='text-sm'>Normal image</p>
                                                 </div>
                                             </div>
                                             <div onClick={multipleImgHandler} className="flex items-center justify-start w-full px-5 py-5 space-x-3 duration-300 ease-out border-2 rounded-lg cursor-pointer hover:border-gray-500 hover:scale-105">
                                                 <ImImages className='w-20 h-20 invert-[20%]' />
                                                 <div>
                                                     <span className='text-xl font-semibold'>Multiple Image</span>
-                                                    <p className='text-sm'>blah blah blah</p>
+                                                    <p className='text-sm'>Rotatable image</p>
                                                 </div>
                                             </div>
                                             <div onClick={gifImgHandler} className="flex items-center justify-start w-full px-5 py-5 space-x-3 duration-300 ease-out border-2 rounded-lg cursor-pointer hover:border-gray-500 hover:scale-105">
                                                 <AiOutlineFileGif className='w-20 h-20 invert-[20%]' />
                                                 <div>
                                                     <span className='text-xl font-semibold'>GIF Image</span>
-                                                    <p className='text-sm'>blah blah blah</p>
+                                                    <p className='text-sm'>Animated image</p>
                                                 </div>
                                             </div>
                                         </div>

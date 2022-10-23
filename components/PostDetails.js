@@ -247,8 +247,12 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
             setThumbnailUrl([])
             setImageResizeList([])
 
-            //push user to uploaded post page
-            router.push(`/post/${generateID}`)
+            setProgress(100)
+            setTimeout(() => {
+                //push user to uploaded post page
+                router.push(`/post/${generateID}`)
+            }, 5000);
+
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -224,7 +224,7 @@ const Profile = () => {
                         <div className="flex pb-6 bg-white border-b shadow sm:pb-10">
                             <div className="flex items-start mt-6 sm:mt-16">
                                 <div className="relative mx-5 sm:mx-16">
-                                    <div className={`absolute right-2 w-8 h-8 ${userDocuments.online ? "bg-[#05b714]" : "bg-gray-400"} border-2 border-gray-300 rounded-full top-3`}></div>
+                                    {/* <div className={`absolute md:right-2 md:w-8 md:h-8 w-5 h-5 right-0 ${userDocuments.online ? "bg-[#05b714]" : "bg-gray-400"} md:border-2 border border-gray-300 rounded-full md:top-3 top-0`}></div> */}
                                     <img className="shadow border-2 sm:border-4 w-[60px] h-[60px] sm:w-[126px] sm:h-[126px] md:w-[132px] md:h-[132px] lg:w-[158px] lg:h-[158px] rounded-full object-cover" src={userDocuments.profileImage} alt="" />
                                 </div>
                                 <div className="space-y-1 sm:space-y-3">
