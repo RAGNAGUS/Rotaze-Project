@@ -284,11 +284,11 @@ const Profile = () => {
                                                 className="relative my-3 [break-inside:avoid] cursor-pointer hover:scale-105 duration-300 ease-out hover:z-10">
 
                                                 {/* 360 logo */}
-                                                {/* {doc.postType == 1 && (
-                  <div className="absolute flex items-center justify-center w-full h-full">
-                    <img src="/360-logo.png" alt="360 logo" className="w-[30%] opacity-80" />
-                  </div>
-                )} */}
+                                                {doc.postType == 1 && (
+                                                    <div className="absolute flex items-center justify-center w-full h-full">
+                                                        <img src="https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/360logo%2F360-logo.png?alt=media&token=a7317a86-d04d-424c-afe2-92c2ee18c1a9" alt="360 logo" className="w-[30%] opacity-80" />
+                                                    </div>
+                                                )}
 
                                                 {/* image */}
                                                 <div>
@@ -312,7 +312,7 @@ const Profile = () => {
                                                 {/* 360 logo */}
                                                 {doc.postType == 1 && (
                                                     <div className="absolute flex items-center justify-center w-full h-full">
-                                                        <img src="/360-logo.png" alt="360 logo" className="w-[30%] opacity-80" />
+                                                        <img src="https://firebasestorage.googleapis.com/v0/b/prototype-e8461.appspot.com/o/360logo%2F360-logo.png?alt=media&token=a7317a86-d04d-424c-afe2-92c2ee18c1a9" alt="360 logo" className="w-[30%] opacity-80" />
                                                     </div>
                                                 )}
 

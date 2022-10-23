@@ -237,20 +237,21 @@ export default function PostDetails({ isConfirm, setisConfirm, uploadImageList, 
         }, 1000);
 
         if (isEverythingFinish) {
-            // close loading popup
-            setIsStartUpload(false)
 
-            // reset things after finish upload
-            setTags([])
-            setProgress(0)
-            setThumbnail([])
-            setThumbnailUrl([])
-            setImageResizeList([])
-
-            setProgress(100)
             setTimeout(() => {
+                // close loading popup
+                setIsStartUpload(false)
+
                 //push user to uploaded post page
                 router.push(`/post/${generateID}`)
+
+                // reset things after finish upload
+                setTags([])
+                setProgress(0)
+                setThumbnail([])
+                setThumbnailUrl([])
+                setImageResizeList([])
+
             }, 5000);
 
         }

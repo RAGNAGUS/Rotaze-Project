@@ -6,7 +6,7 @@ import { uuidv4 } from '@firebase/util'
 
 // firebase
 import { db } from '../../firebase/config'
-import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, updateDoc, onSnapshot, deleteDoc } from "firebase/firestore";
 
 // date fns
 import { format, formatDistanceToNow } from 'date-fns'
@@ -31,6 +31,8 @@ export default function Post() {
     const [isPending, setIsPending] = useState(false)
     const [isUpdatingLike, setIsUpdatingLike] = useState(false)
     const [isUpdatingReport, setIsUpdatingReport] = useState(false)
+
+    const [isSuccessDelete, setIsSuccessDelete] = useState(false)
 
     const [sliderValue, setSliderValue] = useState(0)
     const [showThreeSixty, setShowThreeSixty] = useState(false)
@@ -321,6 +323,19 @@ export default function Post() {
         }
     }
 
+    // delete and push to user profile
+    const deletePost = (postID) => {
+        setIsSuccessDelete(false)
+        const callDelete = async () => {
+            await deleteDoc(doc(db, `posts`, `${postID}`));
+            setIsSuccessDelete(true)
+            setTimeout(() => {
+                router.push(`/profile/${user.uid}`)
+            }, 1500);
+        }
+        callDelete()
+    }
+
     // push user to creator profile
     const pushToProfile = () => {
         router.push(`/profile/${documents.createdBy}`)
@@ -410,10 +425,16 @@ export default function Post() {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <button className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8">
-                                        <div>Next</div>
-                                        <ChevronRightIcon className="w-4 h-4" />
-                                    </button> */}
+                                    {createrDocs?.id == user.uid && (
+                                        <button onClick={() => deletePost(documents.id)} className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8 hover:bg-red-100 hover:border-red-400">
+                                            {!isSuccessDelete && (
+                                                <div>Delete</div>
+                                            )}
+                                            {isSuccessDelete && (
+                                                <div>Success</div>
+                                            )}
+                                        </button>
+                                    )}
                                 </div>
                                 {/* image content */}
                                 <div className="flex items-center justify-center w-full">

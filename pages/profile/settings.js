@@ -37,6 +37,15 @@ const Profile = () => {
         }
     }, [router, user])
 
+    useEffect(() => {
+        setThumbnail(null)
+
+        return () => {
+
+        }
+    }, [])
+
+
 
     // useEffect for getting user document
     useEffect(() => {
@@ -59,7 +68,6 @@ const Profile = () => {
     //update user documents into input form
     useEffect(() => {
         if (userDocuments) {
-            setThumbnail(userDocuments.profileImage)
             setDisplayName(userDocuments.displayName)
             setAbout(userDocuments.about)
         }
@@ -146,9 +154,9 @@ const Profile = () => {
         }
 
         if (!email && !password) {
-            setSuccessMsg("Success, back to homepage")
+            setSuccessMsg("Success, back to profile")
             setTimeout(() => {
-                router.push("/")
+                router.push(`/profile/${user.uid}`)
             }, 1500);
         }
 
@@ -192,7 +200,6 @@ const Profile = () => {
             errorFormat('Image file size must be less than 1mb')
             return
         }
-
         setErrorFormat(null)
         setThumbnail(selected)
         console.log('thumbnail updated');
