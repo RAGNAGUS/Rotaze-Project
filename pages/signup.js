@@ -156,8 +156,8 @@ export default function Signup() {
                     </div>
                 </div>
                 <div className='flex items-center justify-end w-full max-w-lg pt-2 pr-5 space-x-5 text-gray-800'>
-                    <h3>privacy</h3>
-                    <h3>terms</h3>
+                    {/* <h3>privacy</h3>
+                    <h3>terms</h3> */}
                 </div>
             </div>
         </div>
