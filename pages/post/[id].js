@@ -425,7 +425,7 @@ export default function Post() {
                                             </div>
                                         </div>
                                     </div>
-                                    {createrDocs?.id == user.uid && (
+                                    {createrDocs?.id == user?.uid && (
                                         <button onClick={() => deletePost(documents.id)} className="flex items-center justify-center w-16 h-8 ml-auto mr-2 text-gray-600 border border-gray-400 rounded md:mr-10 sm:w-20 sm:h-8 hover:bg-red-100 hover:border-red-400">
                                             {!isSuccessDelete && (
                                                 <div>Delete</div>
@@ -493,7 +493,7 @@ export default function Post() {
                                                         <img
                                                             src={comment.photoURL}
                                                             onClick={() => pushToCommentorProfile(comment.commentBy)}
-                                                            className="mr-3 rounded-full cursor-pointer w-9"
+                                                            className="object-contain mr-3 rounded-full cursor-pointer w-9"
                                                             alt="" />
 
 
